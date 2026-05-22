@@ -51,7 +51,7 @@ COPY . /var/www/html
 # 6. Sakinisha Composer dependencies za production
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
-# 7. LASHA/FUTA CACHE ZOTE ILI LARAVEL ISIKARIRI 127.0.0.1 YA LOCAL KWAKO
+# 7. Safisha Cache zote za Laravel zilizoganda
 RUN php artisan config:clear \
     && php artisan cache:clear \
     && php artisan route:clear \
@@ -62,5 +62,6 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 EXPOSE 10000
 
-# 9. Washa Apache mbele (Hii itarun vizuri bila kufa)
-CMD ["apache2-foreground"]
+# 9. LALIMISHA MIGRATIONS NA SEEDERS ZIRUN HAPA KABLA YA KUWASHA APACHE
+# Tunatumia shell script fupi ili isifeli kama database haijawa tayari kwa sekunde hiyo
+CMD php artisan migrate --seed --force && apache2-foreground
