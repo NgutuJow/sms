@@ -744,18 +744,26 @@ class TestDataSeeder extends Seeder
             $dates[] = $start->copy()->addDays($day)->format('Y-m-d');
         }
 
-        foreach (DB::table('students')->select('id', 'classes')->cursor() as $student) {
+        // Tunavuta mwanafunzi pamoja na school_id ya shule yake kwa kupiga JOIN ya haraka
+        $students = DB::table('students')
+            ->join('school_classes', 'students.classes', '=', 'school_classes.id')
+            ->join('branches', 'school_classes.branch_id', '=', 'branches.id')
+            ->select('students.id as student_id', 'students.classes as class_id', 'branches.school_id')
+            ->cursor();
+
+        foreach ($students as $student) {
             $sampleDates = (array)array_rand(array_flip($dates), min(5, count($dates)));
             foreach ($sampleDates as $date) {
                 $attendanceData[] = [
-                    'student_id' => $student->id,
-                    'class_id' => $student->classes,
+                    'student_id'          => $student->student_id,
+                    'class_id'            => $student->class_id,
+                    'school_id'           => $student->school_id, // <- TUMESAWASISHA HAPA! Sasa haitakaa null mkuu
                     'academic_session_id' => optional($currentSession)->id,
-                    'semester_id' => optional($currentSemester)->id,
-                    'date' => $date,
-                    'status' => $faker->randomElement(['present', 'absent', 'late']),
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'semester_id'         => optional($currentSemester)->id,
+                    'date'                => $date,
+                    'status'              => $faker->randomElement(['present', 'absent', 'late']),
+                    'created_at'          => now(),
+                    'updated_at'          => now(),
                 ];
 
                 if (count($attendanceData) >= 100) {
