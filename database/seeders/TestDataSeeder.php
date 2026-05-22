@@ -72,18 +72,60 @@ class TestDataSeeder extends Seeder
         }
     }
 
-    private function createSchools()
-    {
-        $schoolData = [
-            ['name' => 'Riverside Academy', 'code' => 'RSA001', 'email' => 'info@riverside.ac', 'phone' => '0755123456', 'address' => 'Plot 11 Riverside Road', 'region' => 'Dar es Salaam', 'district' => 'Kinondoni', 'ward' => 'Mikocheni', 'school_type' => 'secondary', 'status' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Horizon Primary School', 'code' => 'HPS002', 'email' => 'contact@horizonprimary.ac', 'phone' => '0755234567', 'address' => 'Mtaa wa Horizon, Mwanza', 'region' => 'Mwanza', 'district' => 'Ilemela', 'ward' => 'Buswelu', 'school_type' => 'primary', 'status' => 1, 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Sunrise International', 'code' => 'SIS003', 'email' => 'hello@sunriseint.ac', 'phone' => '0755345678', 'address' => 'Block 2, Arusha Road', 'region' => 'Arusha', 'district' => 'Arusha', 'ward' => 'Kimandolu', 'school_type' => 'all', 'status' => 1, 'created_at' => now(), 'updated_at' => now()],
-        ];
+    public function createSchools()
+{
+    $schools = [
+        [
+            'code'        => 'RSA001',
+            'name'        => 'Riverside Academy',
+            'address'     => 'Plot 11 Riverside Road',
+            'district'    => 'Kinondoni',
+            'region'      => 'Dar es Salaam',
+            'ward'        => 'Mikocheni',
+            'email'       => 'info@riverside.ac',
+            'phone'       => '0755123456',
+            'school_type' => 'secondary',
+            'status'      => 1,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ],
+        [
+            'code'        => 'HPS002',
+            'name'        => 'Horizon Primary School',
+            'address'     => 'Mtaa wa Horizon',
+            'district'    => 'Ilemela',
+            'region'      => 'Mwanza',
+            'ward'        => 'Buswelu',
+            'email'       => 'contact@horizonprimary.ac',
+            'phone'       => '0755234567',
+            'school_type' => 'primary',
+            'status'      => 1,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ],
+        [
+            'code'        => 'SIS003',
+            'name'        => 'Sunrise International',
+            'address'     => 'Block 2, Arusha Road',
+            'district'    => 'Arusha',
+            'region'      => 'Arusha',
+            'ward'        => 'Kimandolu',
+            'email'       => 'hello@sunriseint.ac',
+            'phone'       => '0755345678',
+            'school_type' => 'all',
+            'status'      => 1,
+            'created_at'  => now(),
+            'updated_at'  => now(),
+        ],
+    ];
 
-        // Tumebadilisha kutoka upsert kwenda insert ya kawaida
-        DB::table('schools')->insert($schoolData);
-        return DB::table('schools')->get()->keyBy('id')->toArray();
+    foreach ($schools as $school) {
+        DB::table('schools')->updateOrInsert(
+            ['code' => $school['code']], // Angalia kama hii code ipo
+            $school                      // Kama ipo update, kama haipo weka mpya
+        );
     }
+}
 
     private function createBranches(array $schools)
     {
