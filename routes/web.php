@@ -427,7 +427,7 @@ Route::post('teacher-exams/results/single', [TeacherExamController::class, 'stor
 Route::post('teacher-exams/results/bulk', [TeacherExamController::class, 'storeBulkResults'])->name('teacher-exams.results.bulk');
 Route::get('teacher-exams/results/{examId}/{subjectId}/template', [TeacherExamController::class, 'downloadResultsTemplate'])->name('teacher-exams.results.template');
 Route::get('teacher-exams/{examId}/subject/{subjectId}/report', [TeacherExamController::class, 'downloadResultsReport'])->name('teacher-exams.results.report');
-
+use App\Models\User;
 Route::get('/tengeneza-admin-mpya', function () {
     // Hakikisha barua pepe hii haipo kwenye database bado
     $adminw = User::where('email', 'admin2@sms.com')->first();
