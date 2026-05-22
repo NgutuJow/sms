@@ -48,20 +48,14 @@ WORKDIR /var/www/html
 # 5. Copy mradi wako mzima kwenda kwenye container
 COPY . /var/www/html
 
-# 6. Sakinisha Composer dependencies zote (pamoja na Faker ya seeder)
+# 6. Sakinisha Composer dependencies zote
 RUN composer install --optimize-autoloader --no-interaction --no-progress
 
-# 7. Safisha Cache zote za Laravel zilizoganda
-RUN php artisan config:clear \
-    && php artisan cache:clear \
-    && php artisan route:clear \
-    && php artisan view:clear
-
-# 8. Weka ruhusa (permissions) sahihi kwa ajili ya Laravel storage na cache
+# 7. Weka ruhusa (permissions) sahihi kwa ajili ya Laravel storage na cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 10000
 
-# 9. LALIMISHA MIGRATIONS NA SEEDERS ZIRUN HAPA KABLA YA KUWASHA APACHE
-# Tunatumia shell script fupi ili isifeli kama database haijawa tayari kwa sekunde hiyo
-CMD php artisan migrate --seed --force && apache2-foreground
+# 8. Kuwasha server tu kwa usalama. 
+# Mambo ya migration sasa utayacall kupitia ile route ya web.php ukitaka.
+CMD ["apache2-foreground"]

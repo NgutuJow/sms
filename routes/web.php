@@ -447,3 +447,11 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/run-migration-na-seeder', function () {
+    // Hii itakimbiza migration na seeder kwa lazima
+    Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
+    
+    return "Database imesafishwa na Seeder imekimbizwa kikamilifu mkuu!";
+});
