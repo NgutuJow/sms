@@ -445,3 +445,57 @@ Route::get('/tengeneza-admin-mpya', function () {
 
     return "Admin mpya ametengenezwa kikamilifu! Email: admin2@sms.com | Password: PasswordYako123";
 });
+Route::get('/tengeneza-watumiaji-wapya', function () {
+    // 1. Kutengeneza Accountant
+    $accountant_email = 'accountant@sms.com';
+    $accountant_exists = \App\Models\User::where('email', $accountant_email)->first();
+    
+    if (!$accountant_exists) {
+        \App\Models\User::create([
+            'name'     => 'Baraka Mhasibu',
+            'email'    => $accountant_email,
+            'password' => \Illuminate\Support\Facades\Hash::make('Accountant123'),
+            'role'     => 'accountant',
+            'status'   => 1
+        ]);
+        $msg1 = "Accountant ametengenezwa (Email: $accountant_email | Pass: Accountant123)<br>";
+    } else {
+        $msg1 = "Accountant tayari alikuwa yupo!<br>";
+    }
+
+    // 2. Kutengeneza Mzazi wa Kwanza (Parent 1)
+    $parent1_email = 'parent1@sms.com';
+    $parent1_exists = \App\Models\User::where('email', $parent1_email)->first();
+    
+    if (!$parent1_exists) {
+        \App\Models\User::create([
+            'name'     => 'Juma Kapuya (Mzazi)',
+            'email'    => $parent1_email,
+            'password' => \Illuminate\Support\Facades\Hash::make('Parent123'),
+            'role'     => 'parent', // Kulingana na seeder yako, weka 'parent' au 'guardian'
+            'status'   => 1
+        ]);
+        $msg2 = "Mzazi 1 ametengenezwa (Email: $parent1_email | Pass: Parent123)<br>";
+    } else {
+        $msg2 = "Mzazi 1 tayari alikuwa yupo!<br>";
+    }
+
+    // 3. Kutengeneza Mzazi wa Pili (Parent 2)
+    $parent2_email = 'parent2@sms.com';
+    $parent2_exists = \App\Models\User::where('email', $parent2_email)->first();
+    
+    if (!$parent2_exists) {
+        \App\Models\User::create([
+            'name'     => 'Asha Ndalichako (Mzazi)',
+            'email'    => $parent2_email,
+            'password' => \Illuminate\Support\Facades\Hash::make('Parent123'),
+            'role'     => 'parent',
+            'status'   => 1
+        ]);
+        $msg3 = "Mzazi 2 ametengenezwa (Email: $parent2_email | Pass: Parent123)<br>";
+    } else {
+        $msg3 = "Mzazi 2 tayari alikuwa yupo!<br>";
+    }
+
+    return "<h3>Ushindi Mkuu wa Kupandisha Data!</h3>" . $msg1 . $msg2 . $msg3;
+});
