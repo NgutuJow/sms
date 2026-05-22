@@ -32,7 +32,7 @@ class AuthController extends Controller
                 return redirect()->intended('/dashboard');
             }
 
-            if ($role === 'guardian') {
+            if ($role === 'guardian' || $role === 'parent') {
                 return redirect()->intended(route('parent.dashboard'));
             }
 
@@ -44,8 +44,12 @@ class AuthController extends Controller
                 return redirect()->intended('/teacher');
             }
 
-            if ($user->teacher) {
-                return redirect()->intended('/teacher');
+            // KAMA NI MWANAFUNZI NA DASHBOARD YAKE HAIPO: Mtoe nje au mpe ujumbe
+            if ($role === 'student') {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Dashboard ya wanafunzi bado haijakamilika kusanidiwa.',
+                ]);
             }
 
             return redirect()->intended('/dashboard');
