@@ -1,0 +1,2 @@
+admission_no,first_name,middle_name,last_name,dob,gender,region,district,street,address,guardian_name,guardian_email,guardian_phone,guardian_type,guardian_occupation,guardian_region,guardian_district,guardian_street,guardian_address,education_level,classes,stream,academic_session,semester,branches,school_attended,grade_completed,suspended_before,suspension_reason
+ADM001,John,,Doe,2010-05-12,Male,Arusha,Arusha Jiji,Sakina,Box 123,Peter Doe,peter@gmail.com,0712345678,Father,Teacher,Arusha,Arusha Jiji,Sakina,Box 123,Form 1,1,1,1,1,1,ABC Primary,STD 7,No,
