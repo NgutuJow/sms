@@ -17,6 +17,7 @@ class CreateSchoolClassesTable extends Migration
     $table->id();
     $table->foreignId('branch_id')->constrained()->onDelete('cascade');
     $table->string('class_name'); // Form 1, Grade 1
+    $table->unique(['branch_id', 'class_name']);
     $table->timestamps();
 });
     }
