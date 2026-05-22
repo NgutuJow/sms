@@ -12,20 +12,20 @@ class CreateAttendacesTable extends Migration
      * @return void
      */
     public function up()
-    {
-        Schema::create('attendances', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-    $table->foreignId('class_id')->constrained('school_classes')->cascadeOnDelete();
-    $table->date('date');
-    $table->enum('status', ['present', 'absent', 'late']);
-    $table->text('remarks')->nullable();
-    $table->foreignId('recorded_by')->nullable()->constrained('users')->nullOnDelete();
-    $table->timestamps();
-
-    $table->unique(['student_id', 'date']); // avoid duplicate
-});
-    }
+{
+    // Hakikisha hapa pameandikwa "student_attendances" kama seeder inavyotaka
+    Schema::create('student_attendances', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('school_id');
+        $table->foreignId('academic_session_id');
+        $table->foreignId('class_id');
+        $table->foreignId('semester_id');
+        $table->date('date');
+        $table->string('status');
+        $table->foreignId('student_id');
+        $table->timestamps();
+    });
+}
 
     /**
      * Reverse the migrations.
