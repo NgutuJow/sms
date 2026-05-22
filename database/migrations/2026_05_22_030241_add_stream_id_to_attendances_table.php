@@ -13,8 +13,10 @@ class AddStreamIdToAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::table('attendances', function (Blueprint $table) {
-            $table->foreignId('stream_id')->nullable()->after('class_id')->constrained('streams')->onDelete('cascade');
+        // Tumebadilisha kutoka 'attendances' kwenda 'student_attendances'
+        Schema::table('student_attendances', function (Blueprint $table) {
+            $table->foreignId('stream_id')->nullable()->after('class_id')
+                  ->constrained('streams')->onDelete('cascade');
         });
     }
 
@@ -25,7 +27,8 @@ class AddStreamIdToAttendancesTable extends Migration
      */
     public function down()
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        // Na hapa pia tunatumia 'student_attendances'
+        Schema::table('student_attendances', function (Blueprint $table) {
             $table->dropForeign(['stream_id']);
             $table->dropColumn('stream_id');
         });
