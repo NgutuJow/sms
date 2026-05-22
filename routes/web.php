@@ -447,18 +447,36 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+<?php
+
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 Route::get('/run-migration-na-seeder', function () {
     try {
-        // 'migrate:fresh' inafuta matable yote ya zamani kwanza, kisha inatengeneza upya na kupiga seeder
-        Artisan::call('migrate:fresh', [
-            '--seed' => true,
-            '--force' => true // Lazima iwepo kwa ajili ya Production (Render)
+        // 1. Zima ukaguzi wa Foreign Keys kwa sekunde chache
+        DB::statement('SET CONSTRAINTS ALL DEFERRED');
+        
+        // 2. Lazimisha kufuta matable yote yaliyopo kwenye database kwa nguvu
+        $tables = DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
+        foreach ($tables as $table) {
+            DB::statement("DROP TABLE IF EXISTS " . $table->tablename . " CASCADE");
+        }
+        
+        // 3. Sasa database ipo tupu kabisa! Piga migrate ya kawaida
+        Artisan::call('migrate', [
+            '--force' => true
         ]);
         
-        return "Database imesafishwa (Fresh) na Seeder imekimbizwa kikamilifu mkuu!";
+        // 4. Piga na seeder zako sasa
+        Artisan::call('db:seed', [
+            '--force' => true
+        ]);
+        
+        return "Ushindi mkuu! Database imesafishwa kwa nguvu, matable yote yametengenezwa upya, na seeder imekimbia kikamilifu!";
+        
     } catch (\Exception $e) {
-        return "Kuna shida imetokea: " . $e->getMessage();
+        return "Kuna shida imetokea mkuu: " . $e->getMessage();
     }
 });
