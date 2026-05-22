@@ -72,62 +72,64 @@ class TestDataSeeder extends Seeder
         }
     }
 
-    public function createSchools()
-{
-    $schools = [
-        [
-            'code'        => 'RSA001',
-            'name'        => 'Riverside Academy',
-            'address'     => 'Plot 11 Riverside Road',
-            'district'    => 'Kinondoni',
-            'region'      => 'Dar es Salaam',
-            'ward'        => 'Mikocheni',
-            'email'       => 'info@riverside.ac',
-            'phone'       => '0755123456',
-            'school_type' => 'secondary',
-            'status'      => 1,
-            'created_at'  => now(),
-            'updated_at'  => now(),
-        ],
-        [
-            'code'        => 'HPS002',
-            'name'        => 'Horizon Primary School',
-            'address'     => 'Mtaa wa Horizon',
-            'district'    => 'Ilemela',
-            'region'      => 'Mwanza',
-            'ward'        => 'Buswelu',
-            'email'       => 'contact@horizonprimary.ac',
-            'phone'       => '0755234567',
-            'school_type' => 'primary',
-            'status'      => 1,
-            'created_at'  => now(),
-            'updated_at'  => now(),
-        ],
-        [
-            'code'        => 'SIS003',
-            'name'        => 'Sunrise International',
-            'address'     => 'Block 2, Arusha Road',
-            'district'    => 'Arusha',
-            'region'      => 'Arusha',
-            'ward'        => 'Kimandolu',
-            'email'       => 'hello@sunriseint.ac',
-            'phone'       => '0755345678',
-            'school_type' => 'all',
-            'status'      => 1,
-            'created_at'  => now(),
-            'updated_at'  => now(),
-        ],
-    ];
+    public function createSchools(): array
+    {
+        $schools = [
+            [
+                'code'        => 'RSA001',
+                'name'        => 'Riverside Academy',
+                'address'     => 'Plot 11 Riverside Road',
+                'district'    => 'Kinondoni',
+                'region'      => 'Dar es Salaam',
+                'ward'        => 'Mikocheni',
+                'email'       => 'info@riverside.ac',
+                'phone'       => '0755123456',
+                'school_type' => 'secondary',
+                'status'      => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'code'        => 'HPS002',
+                'name'        => 'Horizon Primary School',
+                'address'     => 'Mtaa wa Horizon',
+                'district'    => 'Ilemela',
+                'region'      => 'Mwanza',
+                'ward'        => 'Buswelu',
+                'email'       => 'contact@horizonprimary.ac',
+                'phone'       => '0755234567',
+                'school_type' => 'primary',
+                'status'      => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+            [
+                'code'        => 'SIS003',
+                'name'        => 'Sunrise International',
+                'address'     => 'Block 2, Arusha Road',
+                'district'    => 'Arusha',
+                'region'      => 'Arusha',
+                'ward'        => 'Kimandolu',
+                'email'       => 'hello@sunriseint.ac',
+                'phone'       => '0755345678',
+                'school_type' => 'all',
+                'status'      => 1,
+                'created_at'  => now(),
+                'updated_at'  => now(),
+            ],
+        ];
 
-    foreach ($schools as $school) {
-        DB::table('schools')->updateOrInsert(
-            ['code' => $school['code']], // Angalia kama hii code ipo
-            $school                      // Kama ipo update, kama haipo weka mpya
-        );
+        foreach ($schools as $school) {
+            DB::table('schools')->updateOrInsert(
+                ['code' => $school['code']], 
+                $school                      
+            );
+        }
+
+        return DB::table('schools')->get()->toArray();
     }
-}
 
-    private function createBranches(array $schools)
+    private function createBranches(array $schools): array
     {
         $branchData = [];
         $districts = ['Ilala', 'Nyamagana', 'Kilimanjaro'];
@@ -157,12 +159,11 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        // Tumebadilisha kutoka upsert kwenda insert ya kawaida
         DB::table('branches')->insert($branchData);
-        return DB::table('branches')->get()->keyBy('id')->toArray();
+        return DB::table('branches')->get()->toArray();
     }
 
-    private function createClasses(array $branches)
+    private function createClasses(array $branches): array
     {
         $classNames = ['Form 1', 'Form 2', 'Form 3', 'Form 4', 'Form 5'];
         $classData = [];
@@ -178,24 +179,22 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        // MAREKEBISHO YA MSINGI: Imebadilishwa kutoka upsert kuja insert kwa ajili ya Postgres compatibility
         DB::table('school_classes')->insert($classData);
-        return DB::table('school_classes')->get()->keyBy('id')->toArray();
+        return DB::table('school_classes')->get()->toArray();
     }
 
-    private function createAcademicSessions()
+    private function createAcademicSessions(): array
     {
         $sessionData = [
             ['name' => '2025/2026', 'start_date' => '2025-09-01', 'end_date' => '2026-08-31', 'is_current' => 1, 'created_at' => now(), 'updated_at' => now()],
             ['name' => '2024/2025', 'start_date' => '2024-09-01', 'end_date' => '2025-08-31', 'is_current' => 0, 'created_at' => now(), 'updated_at' => now()],
         ];
 
-        // Imebadilishwa kuwa insert
         DB::table('academic_sessions')->insert($sessionData);
-        return DB::table('academic_sessions')->get()->keyBy('id')->toArray();
+        return DB::table('academic_sessions')->get()->toArray();
     }
 
-    private function createSemesters(array $sessions)
+    private function createSemesters(array $sessions): array
     {
         $semesterData = [];
 
@@ -220,12 +219,11 @@ class TestDataSeeder extends Seeder
             ];
         }
 
-        // Imebadilishwa kuwa insert
         DB::table('semesters')->insert($semesterData);
-        return DB::table('semesters')->get()->keyBy('id')->toArray();
+        return DB::table('semesters')->get()->toArray();
     }
 
-    private function createTeachers(array $branches, $faker)
+    private function createTeachers(array $branches, $faker): array
     {
         $designations = ['Head of Department', 'Subject Teacher', 'Form Teacher', 'Coordinator'];
         $qualificationOptions = ['Diploma', 'Bachelor', 'Master', 'Certificate'];
@@ -254,7 +252,6 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        // Imebadilishwa kuwa insert
         DB::table('teachers')->insert($teacherData);
 
         $teachers = DB::table('teachers')->get();
@@ -288,33 +285,32 @@ class TestDataSeeder extends Seeder
             DB::table('teachers')->where('id', $teacher->id)->update(['user_id' => $userId]);
         }
 
-        return DB::table('teachers')->get()->keyBy('id')->toArray();
+        return DB::table('teachers')->get()->toArray();
     }
 
-    private function createStreams(array $classes, array $teachers)
+    private function createStreams(array $classes, array $teachers): array
     {
         $streamNames = ['A', 'B'];
-        $teacherIds = array_keys($teachers);
         $streamData = [];
 
         foreach ($classes as $class) {
             foreach ($streamNames as $streamName) {
+                $randomTeacher = $teachers[array_rand($teachers)];
                 $streamData[] = [
                     'school_class_id' => $class->id,
                     'stream_name' => $streamName,
-                    'teacher_id' => $teacherIds[array_rand($teacherIds)],
+                    'teacher_id' => $randomTeacher->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
             }
         }
 
-        // Imebadilishwa kuwa insert
         DB::table('streams')->insert($streamData);
-        return DB::table('streams')->get()->keyBy('id')->toArray();
+        return DB::table('streams')->get()->toArray();
     }
 
-    private function createSubjects(array $classes)
+    private function createSubjects(array $classes): array
     {
         $subjectNames = ['Mathematics', 'English', 'Biology', 'Chemistry', 'Physics'];
         $subjectData = [];
@@ -332,16 +328,16 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        // Imebadilishwa kuwa insert
         DB::table('subjects')->insert($subjectData);
-        return DB::table('subjects')->get()->keyBy('id')->toArray();
+        return DB::table('subjects')->get()->toArray();
     }
 
-    private function createFeeStructures(array $classes, array $sessions)
+    private function createFeeStructures(array $classes, array $sessions): array
     {
         $feeTypes = ['Tuition', 'Library Fee'];
         $structures = [];
-        $sessionName = $sessions[array_key_last($sessions)]->name;
+        $lastSession = end($sessions);
+        $sessionName = $lastSession->name;
 
         foreach ($classes as $class) {
             foreach ($feeTypes as $feeType) {
@@ -356,28 +352,32 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        // Imebadilishwa kuwa insert
         DB::table('fee_structures')->insert($structures);
-        return DB::table('fee_structures')->get()->keyBy('id')->toArray();
+        return DB::table('fee_structures')->get()->toArray();
     }
 
     private function createStudents(array $classes, array $streams, array $sessions, array $semesters, array $branches, $faker)
     {
-        $currentSessionId = collect($sessions)->firstWhere('is_current', 1)->id;
-        $semesterId = collect($semesters)->firstWhere('academic_session_id', $currentSessionId)->id;
+        $currentSession = collect($sessions)->firstWhere('is_current', 1);
+        $currentSessionId = $currentSession ? $currentSession->id : 1;
+        
+        $semester = collect($semesters)->firstWhere('academic_session_id', $currentSessionId);
+        $semesterId = $semester ? $semester->id : 1;
+        
         $studentCount = 30;
         $studentPassword = Hash::make('password123');
-        $classIds = array_keys($classes);
+        
         $streamByClass = [];
-
         foreach ($streams as $stream) {
             $streamByClass[$stream->school_class_id][] = $stream->id;
         }
 
         for ($i = 1; $i <= $studentCount; $i++) {
-            $classId = $classIds[array_rand($classIds)];
-            $streamId = $streamByClass[$classId][array_rand($streamByClass[$classId])];
-            $branchId = $classes[$classId]->branch_id;
+            $randomClass = $classes[array_rand($classes)];
+            $classId = $randomClass->id;
+            $streamId = !empty($streamByClass[$classId]) ? $streamByClass[$classId][array_rand($streamByClass[$classId])] : 1;
+            $branchId = $randomClass->branch_id;
+            
             $dob = $faker->dateTimeBetween('-18 years', '-11 years')->format('Y-m-d');
             $gender = $faker->randomElement(['Male', 'Female']);
             $firstName = $faker->firstName($gender === 'Male' ? 'male' : 'female');
@@ -411,7 +411,6 @@ class TestDataSeeder extends Seeder
             }
 
             $studentEmail = strtolower($firstName . '.' . $lastName . $i . '@schooltest.local');
-            $studentUserId = null;
             $existingStudent = DB::table('students')->where('admission_no', $admissionNo)->first();
 
             if ($existingStudent) {
@@ -423,52 +422,24 @@ class TestDataSeeder extends Seeder
                         'email_verified_at' => now(),
                         'password' => $studentPassword,
                         'role' => 'student',
-                        'remember_token' => Str::random(10),
-                        'updated_at' => now(),
-                    ]);
-                } else {
-                    $studentUserId = DB::table('users')->insertGetId([
-                        'name' => $firstName . ' ' . $lastName,
-                        'email' => $studentEmail,
-                        'email_verified_at' => now(),
-                        'password' => $studentPassword,
-                        'role' => 'student',
-                        'remember_token' => Str::random(10),
-                        'created_at' => now(),
                         'updated_at' => now(),
                     ]);
                 }
-
+                
                 DB::table('students')->where('id', $existingStudent->id)->update([
                     'user_id' => $guardianId,
-                    'student_user_id' => $studentUserId,
                     'first_name' => $firstName,
-                    'middle_name' => $faker->optional()->firstName(),
                     'last_name' => $lastName,
                     'dob' => $dob,
                     'gender' => $gender,
-                    'region' => $faker->randomElement(['Dar es Salaam', 'Arusha', 'Mwanza', 'Morogoro']),
-                    'district' => $faker->word(),
-                    'street' => $faker->streetName(),
-                    'address' => $faker->address(),
                     'guardian_name' => $guardianName,
                     'guardian_email' => $guardianEmail,
                     'guardian_phone' => $guardianPhone,
-                    'guardian_type' => $faker->randomElement(['Parent', 'Guardian', 'Aunt', 'Uncle']),
-                    'guardian_occupation' => $faker->jobTitle(),
-                    'guardian_region' => $faker->randomElement(['Dar es Salaam', 'Arusha', 'Mwanza']),
-                    'guardian_district' => $faker->city(),
-                    'guardian_street' => $faker->streetName(),
-                    'guardian_address' => $faker->address(),
-                    'education_level' => 'Secondary',
                     'classes' => $classId,
                     'stream' => $streamId,
                     'academic_session' => $currentSessionId,
                     'semester' => $semesterId,
                     'branches' => $branchId,
-                    'school_attended' => $faker->company . ' School',
-                    'grade_completed' => 'Grade ' . rand(6, 10),
-                    'suspended_before' => 'No',
                     'status' => 'active',
                     'updated_at' => now(),
                 ]);
@@ -524,7 +495,7 @@ class TestDataSeeder extends Seeder
         }
     }
 
-    private function createInvoices(array $feeStructures, $faker)
+    private function createInvoices(array $feeStructures, $faker): array
     {
         $invoiceData = [];
         $invoiceItems = [];
@@ -532,12 +503,17 @@ class TestDataSeeder extends Seeder
         $invoiceCount = 30;
 
         $studentRecords = DB::table('students')->select('id', 'classes')->get()->keyBy('id');
+        if ($studentRecords->isEmpty()) return [];
+        
         $studentIds = $studentRecords->keys()->toArray();
 
         for ($i = 0; $i < $invoiceCount; $i++) {
             $studentId = $studentIds[array_rand($studentIds)];
             $student = $studentRecords[$studentId];
+            
             $feeList = $feeByClass[$student->classes] ?? collect($feeStructures)->where('class_id', $student->classes);
+            if ($feeList->isEmpty()) continue;
+
             $chosenFees = $feeList->random(min(3, $feeList->count()));
             $totalAmount = $chosenFees->sum('amount');
             $paidAmount = $faker->optional(0.8, 0)->randomFloat(2, 0, $totalAmount);
@@ -558,14 +534,18 @@ class TestDataSeeder extends Seeder
             ];
         }
 
-        $referenceNos = array_column($invoiceData, 'reference_no');
+        if (empty($invoiceData)) return [];
 
+        $referenceNos = array_column($invoiceData, 'reference_no');
         $this->insertChunked('invoices', $invoiceData, 50);
+        
         $insertedInvoices = DB::table('invoices')->whereIn('reference_no', $referenceNos)->get();
 
         foreach ($insertedInvoices as $invoice) {
             $student = $studentRecords[$invoice->student_id];
             $feeList = $feeByClass[$student->classes] ?? collect($feeStructures)->where('class_id', $student->classes);
+            if ($feeList->isEmpty()) continue;
+            
             $chosenFees = $feeList->random(min(3, $feeList->count()));
             foreach ($chosenFees as $fee) {
                 $invoiceItems[] = [
@@ -577,10 +557,10 @@ class TestDataSeeder extends Seeder
         }
 
         $this->insertChunked('invoice_items', $invoiceItems, 50);
-        return DB::table('invoices')->whereIn('id', $insertedInvoices->pluck('id'))->get()->keyBy('id')->toArray();
+        return DB::table('invoices')->whereIn('id', $insertedInvoices->pluck('id'))->get()->toArray();
     }
 
-    private function createPayments($faker)
+    private function createPayments($faker): array
     {
         $paymentData = [];
 
@@ -610,8 +590,10 @@ class TestDataSeeder extends Seeder
             ];
         }
 
+        if (empty($paymentData)) return [];
+
         $this->insertChunked('payments', $paymentData, 50);
-        return DB::table('payments')->orderBy('id', 'desc')->limit(count($paymentData))->get()->keyBy('id')->toArray();
+        return DB::table('payments')->orderBy('id', 'desc')->limit(count($paymentData))->get()->toArray();
     }
 
     private function createReceipts(array $payments)
@@ -627,7 +609,9 @@ class TestDataSeeder extends Seeder
             ];
         }
 
-        $this->insertChunked('receipts', $receiptData, 100);
+        if (!empty($receiptData)) {
+            $this->insertChunked('receipts', $receiptData, 100);
+        }
     }
 
     private function createExams(array $sessions, array $semesters, array $classes, $faker)
@@ -636,7 +620,10 @@ class TestDataSeeder extends Seeder
         $created = [];
 
         $currentSession = collect($sessions)->firstWhere('is_current', 1);
+        if (!$currentSession) return collect();
+        
         $semesterIds = collect($semesters)->where('academic_session_id', $currentSession->id)->pluck('id')->toArray();
+        if (empty($semesterIds)) return collect();
 
         foreach ($examNames as $examName) {
             $created[] = [
@@ -663,12 +650,14 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        $this->insertChunked('exam_class', $examClass, 100, true);
+        $this->insertChunked('exam_class', $examClass, 100);
         return $exams;
     }
 
     private function createMarksAndResults($exams, array $subjects, $faker)
     {
+        if ($exams->isEmpty()) return;
+        
         $examIds = $exams->pluck('id')->toArray();
         $subjectByClass = [];
         foreach ($subjects as $subject) {
@@ -677,8 +666,6 @@ class TestDataSeeder extends Seeder
 
         $markData = [];
         $resultData = [];
-        $markBatchSize = 100;
-        $resultBatchSize = 100;
 
         foreach (DB::table('students')->select('id', 'classes')->cursor() as $student) {
             if (empty($subjectByClass[$student->classes])) {
@@ -706,8 +693,8 @@ class TestDataSeeder extends Seeder
                         'updated_at' => now(),
                     ];
 
-                    if (count($markData) >= $markBatchSize) {
-                        $this->insertChunked('marks', $markData, 100, true);
+                    if (count($markData) >= 100) {
+                        $this->insertChunked('marks', $markData, 100);
                         $markData = [];
                     }
                 }
@@ -728,19 +715,19 @@ class TestDataSeeder extends Seeder
                     'updated_at' => now(),
                 ];
 
-                if (count($resultData) >= $resultBatchSize) {
-                    $this->insertChunked('exam_results', $resultData, 100, true);
+                if (count($resultData) >= 100) {
+                    $this->insertChunked('exam_results', $resultData, 100);
                     $resultData = [];
                 }
             }
         }
 
-        if (! empty($markData)) {
-            $this->insertChunked('marks', $markData, 100, true);
+        if (!empty($markData)) {
+            $this->insertChunked('marks', $markData, 100);
         }
 
-        if (! empty($resultData)) {
-            $this->insertChunked('exam_results', $resultData, 100, true);
+        if (!empty($resultData)) {
+            $this->insertChunked('exam_results', $resultData, 100);
         }
     }
 
@@ -758,7 +745,7 @@ class TestDataSeeder extends Seeder
         }
 
         foreach (DB::table('students')->select('id', 'classes')->cursor() as $student) {
-            $sampleDates = (array)array_rand(array_flip($dates), 5);
+            $sampleDates = (array)array_rand(array_flip($dates), min(5, count($dates)));
             foreach ($sampleDates as $date) {
                 $attendanceData[] = [
                     'student_id' => $student->id,
@@ -767,17 +754,23 @@ class TestDataSeeder extends Seeder
                     'semester_id' => optional($currentSemester)->id,
                     'date' => $date,
                     'status' => $faker->randomElement(['present', 'absent', 'late']),
-                    'remarks' => $faker->optional(0.1)->sentence(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+
+                if (count($attendanceData) >= 100) {
+                    $this->insertChunked('student_attendances', $attendanceData, 100);
+                    $attendanceData = [];
+                }
             }
         }
 
-        $this->insertChunked('attendances', $attendanceData, 100);
+        if (!empty($attendanceData)) {
+            $this->insertChunked('student_attendances', $attendanceData, 100);
+        }
     }
 
-    private function gradeForScore($score)
+    private function gradeForScore($score): string
     {
         if ($score >= 80) return 'A';
         if ($score >= 70) return 'B';
@@ -786,15 +779,15 @@ class TestDataSeeder extends Seeder
         return 'F';
     }
 
-    private function remarksForAverage($average)
+    private function remarksForAverage($average): string
     {
-        if ($average >= 80) return 'Excellent performance';
-        if ($average >= 60) return 'Good progress, maintain it';
-        if ($average >= 50) return 'Satisfactory effort';
-        return 'Needs serious improvement';
+        if ($average >= 75) return 'Excellent Work!';
+        if ($average >= 60) return 'Good Progress.';
+        if ($average >= 50) return 'Satisfactory performance.';
+        return 'Needs regular improvement.';
     }
 
-    private function insertChunked($table, array $data, $chunkSize = 100, $ignoreConflict = false)
+    private function insertChunked(string $table, array $data, int $chunkSize = 100)
     {
         if (empty($data)) return;
         
