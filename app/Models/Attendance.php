@@ -1,10 +1,14 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
 {
+    // --- LAZIMISHA HAPA LIENDE KWENYE TABLE LETU HALISI TULILOTENGENEZA ---
+    protected $table = 'student_attendances';
+
     protected $fillable = [
         'student_id',
         'class_id',
