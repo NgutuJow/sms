@@ -51,10 +51,16 @@ COPY . /var/www/html
 # 6. Sakinisha Composer dependencies za production
 RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
-# 7. Weka ruhusa (permissions) sahihi kwa ajili ya Laravel storage na cache
+# 7. LASHA/FUTA CACHE ZOTE ILI LARAVEL ISIKARIRI 127.0.0.1 YA LOCAL KWAKO
+RUN php artisan config:clear \
+    && php artisan cache:clear \
+    && php artisan route:clear \
+    && php artisan view:clear
+
+# 8. Weka ruhusa (permissions) sahihi kwa ajili ya Laravel storage na cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 10000
 
-# 8. Washa Apache mbele (Hii itarun vizuri bila kufa)
+# 9. Washa Apache mbele (Hii itarun vizuri bila kufa)
 CMD ["apache2-foreground"]
