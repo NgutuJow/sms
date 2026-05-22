@@ -20,7 +20,17 @@ services:
       - key: LOG_CHANNEL
         value: stack
       - key: DB_CONNECTION
-        value: pgsql
+        value: mysql
+      - key: DB_HOST
+        value: <mysql-host>
+      - key: DB_PORT
+        value: 3306
+      - key: DB_DATABASE
+        value: <database-name>
+      - key: DB_USERNAME
+        value: <username>
+      - key: DB_PASSWORD
+        value: <password>
       - key: DATABASE_URL
         fromDatabase:
           name: sms-db
