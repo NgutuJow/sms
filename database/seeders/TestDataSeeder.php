@@ -80,19 +80,14 @@ class TestDataSeeder extends Seeder
             ['name' => 'Sunrise International', 'code' => 'SIS003', 'email' => 'hello@sunriseint.ac', 'phone' => '0755345678', 'address' => 'Block 2, Arusha Road', 'region' => 'Arusha', 'district' => 'Arusha', 'ward' => 'Kimandolu', 'school_type' => 'all', 'status' => 1, 'created_at' => now(), 'updated_at' => now()],
         ];
 
-        DB::table('schools')->upsert($schoolData, ['code'], ['name', 'email', 'phone', 'address', 'region', 'district', 'ward', 'school_type', 'status', 'updated_at']);
+        // Tumebadilisha kutoka upsert kwenda insert ya kawaida
+        DB::table('schools')->insert($schoolData);
         return DB::table('schools')->get()->keyBy('id')->toArray();
     }
 
     private function createBranches(array $schools)
     {
         $branchData = [];
-        $branchTemplates = [
-            ['branch_name' => 'Main Campus', 'branch_type' => 'Day', 'education_level' => 'secondary', 'email' => 'main@school.ac'],
-            ['branch_name' => 'North Wing', 'branch_type' => 'Boarding', 'education_level' => 'primary', 'email' => 'north@school.ac'],
-            ['branch_name' => 'East Campus', 'branch_type' => 'Day', 'education_level' => 'all', 'email' => 'east@school.ac'],
-        ];
-
         $districts = ['Ilala', 'Nyamagana', 'Kilimanjaro'];
         $wards = ['Mwembe', 'Pamba', 'Unga'];
 
@@ -120,7 +115,8 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        DB::table('branches')->upsert($branchData, ['branch_code'], ['school_id', 'branch_name', 'branch_type', 'education_level', 'email', 'phone', 'alternative_phone', 'region', 'district', 'ward', 'street', 'physical_address', 'postal_address', 'status', 'updated_at']);
+        // Tumebadilisha kutoka upsert kwenda insert ya kawaida
+        DB::table('branches')->insert($branchData);
         return DB::table('branches')->get()->keyBy('id')->toArray();
     }
 
@@ -140,7 +136,8 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        DB::table('school_classes')->upsert($classData, ['branch_id', 'class_name'], ['created_at', 'updated_at']);
+        // MAREKEBISHO YA MSINGI: Imebadilishwa kutoka upsert kuja insert kwa ajili ya Postgres compatibility
+        DB::table('school_classes')->insert($classData);
         return DB::table('school_classes')->get()->keyBy('id')->toArray();
     }
 
@@ -151,7 +148,8 @@ class TestDataSeeder extends Seeder
             ['name' => '2024/2025', 'start_date' => '2024-09-01', 'end_date' => '2025-08-31', 'is_current' => 0, 'created_at' => now(), 'updated_at' => now()],
         ];
 
-        DB::table('academic_sessions')->upsert($sessionData, ['name'], ['start_date', 'end_date', 'is_current', 'updated_at']);
+        // Imebadilishwa kuwa insert
+        DB::table('academic_sessions')->insert($sessionData);
         return DB::table('academic_sessions')->get()->keyBy('id')->toArray();
     }
 
@@ -180,7 +178,8 @@ class TestDataSeeder extends Seeder
             ];
         }
 
-        DB::table('semesters')->upsert($semesterData, ['academic_session_id', 'semester_name'], ['start_date', 'end_date', 'is_current', 'updated_at']);
+        // Imebadilishwa kuwa insert
+        DB::table('semesters')->insert($semesterData);
         return DB::table('semesters')->get()->keyBy('id')->toArray();
     }
 
@@ -213,7 +212,8 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        DB::table('teachers')->upsert($teacherData, ['teacher_id_number'], ['branch_id', 'full_name', 'email', 'phone', 'gender', 'dob', 'designation', 'qualification', 'joining_date', 'status', 'image', 'address', 'updated_at']);
+        // Imebadilishwa kuwa insert
+        DB::table('teachers')->insert($teacherData);
 
         $teachers = DB::table('teachers')->get();
         foreach ($teachers as $teacher) {
@@ -267,7 +267,8 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        DB::table('streams')->upsert($streamData, ['school_class_id', 'stream_name'], ['teacher_id', 'updated_at']);
+        // Imebadilishwa kuwa insert
+        DB::table('streams')->insert($streamData);
         return DB::table('streams')->get()->keyBy('id')->toArray();
     }
 
@@ -289,7 +290,8 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        DB::table('subjects')->upsert($subjectData, ['school_class_id', 'subject_name'], ['subject_code', 'type', 'updated_at']);
+        // Imebadilishwa kuwa insert
+        DB::table('subjects')->insert($subjectData);
         return DB::table('subjects')->get()->keyBy('id')->toArray();
     }
 
@@ -312,7 +314,8 @@ class TestDataSeeder extends Seeder
             }
         }
 
-        DB::table('fee_structures')->upsert($structures, ['class_id', 'fee_type', 'academic_year'], ['amount', 'updated_at']);
+        // Imebadilishwa kuwa insert
+        DB::table('fee_structures')->insert($structures);
         return DB::table('fee_structures')->get()->keyBy('id')->toArray();
     }
 
@@ -722,72 +725,39 @@ class TestDataSeeder extends Seeder
                     'semester_id' => optional($currentSemester)->id,
                     'date' => $date,
                     'status' => $faker->randomElement(['present', 'absent', 'late']),
-                    'remarks' => $faker->optional(0.4)->sentence(),
-                    'recorded_by' => null,
+                    'remarks' => $faker->optional(0.1)->sentence(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
-
-                if (count($attendanceData) >= 100) {
-                    $this->insertChunked('attendances', $attendanceData, 100, true);
-                    $attendanceData = [];
-                }
             }
         }
 
-        if (! empty($attendanceData)) {
-            $this->insertChunked('attendances', $attendanceData, 100, true);
-        }
-    }
-
-    private function insertChunked(string $table, array $data, int $chunkSize = 250, bool $ignore = false)
-    {
-        foreach (array_chunk($data, $chunkSize) as $chunk) {
-            if (empty($chunk)) {
-                continue;
-            }
-
-            if ($ignore) {
-                DB::table($table)->insertOrIgnore($chunk);
-            } else {
-                DB::table($table)->insert($chunk);
-            }
-        }
+        $this->insertChunked('attendances', $attendanceData, 100);
     }
 
     private function gradeForScore($score)
     {
-        if ($score >= 80) {
-            return 'A';
-        }
-        if ($score >= 70) {
-            return 'B';
-        }
-        if ($score >= 60) {
-            return 'C';
-        }
-        if ($score >= 50) {
-            return 'D';
-        }
-
+        if ($score >= 80) return 'A';
+        if ($score >= 70) return 'B';
+        if ($score >= 60) return 'C';
+        if ($score >= 50) return 'D';
         return 'F';
     }
 
     private function remarksForAverage($average)
     {
-        if ($average >= 80) {
-            return 'Excellent performance, keep it up.';
-        }
-        if ($average >= 70) {
-            return 'Very good performance with room for improvement.';
-        }
-        if ($average >= 60) {
-            return 'Good performance, try to work harder.';
-        }
-        if ($average >= 50) {
-            return 'Satisfactory performance, more effort is needed.';
-        }
+        if ($average >= 80) return 'Excellent performance';
+        if ($average >= 60) return 'Good progress, maintain it';
+        if ($average >= 50) return 'Satisfactory effort';
+        return 'Needs serious improvement';
+    }
 
-        return 'Needs improvement and additional support.';
+    private function insertChunked($table, array $data, $chunkSize = 100, $ignoreConflict = false)
+    {
+        if (empty($data)) return;
+        
+        foreach (array_chunk($data, $chunkSize) as $chunk) {
+            DB::table($table)->insert($chunk);
+        }
     }
 }
