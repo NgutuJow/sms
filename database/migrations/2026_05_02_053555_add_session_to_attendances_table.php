@@ -13,13 +13,14 @@ class AddSessionToAttendancesTable extends Migration
      */
     public function up()
     {
-        Schema::table('attendances', function (Blueprint $table) {
-    $table->foreignId('academic_session_id')->after('class_id')
-          ->constrained()->cascadeOnDelete();
+        // Tumebadilisha kutoka 'attendances' kwenda 'student_attendances' herufi kwa herufi
+        Schema::table('student_attendances', function (Blueprint $table) {
+            $table->foreignId('academic_session_id')->after('class_id')
+                  ->constrained()->cascadeOnDelete();
 
-    $table->foreignId('semester_id')->nullable()
-          ->constrained()->nullOnDelete();
-});
+            $table->foreignId('semester_id')->nullable()->after('academic_session_id')
+                  ->constrained()->nullOnDelete();
+        });
     }
 
     /**
@@ -29,8 +30,12 @@ class AddSessionToAttendancesTable extends Migration
      */
     public function down()
     {
-        Schema::table('attendances', function (Blueprint $table) {
-            //
+        Schema::table('student_attendances', function (Blueprint $table) {
+            // Ni vizuri kuweka njia ya kufuta hizi foreign keys na columns kama ukirun migrate:rollback
+            $table->dropForeign(['academic_session_id']);
+            $table->dropForeign(['semester_id']);
+            
+            $table->dropColumn(['academic_session_id', 'semester_id']);
         });
     }
 }
