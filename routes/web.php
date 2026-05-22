@@ -450,8 +450,15 @@ Route::middleware(['auth'])->group(function () {
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/run-migration-na-seeder', function () {
-    // Hii itakimbiza migration na seeder kwa lazima
-    Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
-    
-    return "Database imesafishwa na Seeder imekimbizwa kikamilifu mkuu!";
+    try {
+        // 'migrate:fresh' inafuta matable yote ya zamani kwanza, kisha inatengeneza upya na kupiga seeder
+        Artisan::call('migrate:fresh', [
+            '--seed' => true,
+            '--force' => true // Lazima iwepo kwa ajili ya Production (Render)
+        ]);
+        
+        return "Database imesafishwa (Fresh) na Seeder imekimbizwa kikamilifu mkuu!";
+    } catch (\Exception $e) {
+        return "Kuna shida imetokea: " . $e->getMessage();
+    }
 });
