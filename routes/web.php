@@ -428,21 +428,59 @@ Route::post('teacher-exams/results/bulk', [TeacherExamController::class, 'storeB
 Route::get('teacher-exams/results/{examId}/{subjectId}/template', [TeacherExamController::class, 'downloadResultsTemplate'])->name('teacher-exams.results.template');
 Route::get('teacher-exams/{examId}/subject/{subjectId}/report', [TeacherExamController::class, 'downloadResultsReport'])->name('teacher-exams.results.report');
 use App\Models\User;
-Route::get('/tengeneza-admin-mpya', function () {
-    // Hakikisha barua pepe hii haipo kwenye database bado
-    $adminw = User::where('email', 'admin2@sms.com')->first();
+
+
+Route::get('/tengeneza-watumiaji-wapya', function () {
+    // 1. Kutengeneza Accountant
+    $accountant_email = 'accountant@sms.com';
+    $accountant_exists = \App\Models\User::where('email', $accountant_email)->first();
     
-    if ($adminw) {
-        return "Admin huyu tayari yupo kwenye mfumo!";
+    if (!$accountant_exists) {
+        \App\Models\User::create([
+            'name'     => 'Baraka Mhasibu',
+            'email'    => $accountant_email,
+            'password' => \Illuminate\Support\Facades\Hash::make('Accountant123'),
+            'role'     => 'accountant',
+            'status'   => 1
+        ]);
+        $msg1 = "Accountant ametengenezwa (Email: $accountant_email | Pass: Accountant123)<br>";
+    } else {
+        $msg1 = "Accountant tayari alikuwa yupo!<br>";
     }
 
-    User::create([
-        'name'     => 'Adamu Omari Admin',
-        'email'    => 'admin2@sms.com',
-        'password' => Hash::make('Password123'), // Weka password unayoitaka hapa
-        'role'     => 'admin', // Au 'type' => 'admin' kulingana na column ya table lako
-        'status'   => 1
-    ]);
+    // 2. Kutengeneza Mzazi wa Kwanza (Parent 1)
+    $parent1_email = 'parent1@sms.com';
+    $parent1_exists = \App\Models\User::where('email', $parent1_email)->first();
+    
+    if (!$parent1_exists) {
+        \App\Models\User::create([
+            'name'     => 'Juma Kapuya (Mzazi)',
+            'email'    => $parent1_email,
+            'password' => \Illuminate\Support\Facades\Hash::make('Parent123'),
+            'role'     => 'parent', // Kulingana na seeder yako, weka 'parent' au 'guardian'
+            'status'   => 1
+        ]);
+        $msg2 = "Mzazi 1 ametengenezwa (Email: $parent1_email | Pass: Parent123)<br>";
+    } else {
+        $msg2 = "Mzazi 1 tayari alikuwa yupo!<br>";
+    }
 
-    return "Admin mpya ametengenezwa kikamilifu! Email: admin2@sms.com | Password: Password123";
+    // 3. Kutengeneza Mzazi wa Pili (Parent 2)
+    $parent2_email = 'parent2@sms.com';
+    $parent2_exists = \App\Models\User::where('email', $parent2_email)->first();
+    
+    if (!$parent2_exists) {
+        \App\Models\User::create([
+            'name'     => 'Asha Ndalichako (Mzazi)',
+            'email'    => $parent2_email,
+            'password' => \Illuminate\Support\Facades\Hash::make('Parent123'),
+            'role'     => 'parent',
+            'status'   => 1
+        ]);
+        $msg3 = "Mzazi 2 ametengenezwa (Email: $parent2_email | Pass: Parent123)<br>";
+    } else {
+        $msg3 = "Mzazi 2 tayari alikuwa yupo!<br>";
+    }
+
+    return "<h3>Ushindi Mkuu wa Kupandisha Data!</h3>" . $msg1 . $msg2 . $msg3;
 });

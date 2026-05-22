@@ -248,6 +248,20 @@
     @yield('content')
 </main>
 
+<!-- Application Footer -->
+<footer style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 1.5rem 0; margin-top: 2rem;">
+    <div class="container-fluid px-5 d-flex justify-content-between align-items-center" style="font-size: 12px; color: #64748b;">
+        <div>
+            <p style="margin: 0;"><strong>School Management System</strong> | Version 1.0.0</p>
+            <p style="margin: 0.25rem 0 0;">© 2026 School Management System</p>
+        </div>
+        <div style="text-align: right;">
+            <p style="margin: 0;"><strong>Developed by:</strong> <a href="mailto:ngutujoseph@gmail.com" style="color: #2563eb; text-decoration: none;">Joseph Genes</a></p>
+            <p style="margin: 0.25rem 0 0;"><a href="mailto:ngutujoseph@gmail.com" style="color: #64748b; text-decoration: none; font-size: 11px;">ngutujoseph@gmail.com</a></p>
+        </div>
+    </div>
+</footer>
+
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

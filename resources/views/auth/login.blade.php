@@ -250,6 +250,9 @@
       </form>
 
       <p class="footer-note">Need help accessing your account? Contact your school administrator for support.</p>
+      <p class="footer-note" style="margin-top: 16px; font-size: 0.85rem; text-align: center;">
+        <a href="/SMS_User_Manual.pdf" target="_blank" style="color: #38BDF8; text-decoration: none; font-weight: 600;">📖 Download User Manual</a>
+      </p>
     </div>
   </div>
 </body>
