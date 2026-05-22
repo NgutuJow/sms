@@ -739,42 +739,52 @@ class TestDataSeeder extends Seeder
 
         $currentSession = DB::table('academic_sessions')->where('is_current', 1)->first();
         $currentSemester = DB::table('semesters')->where('academic_session_id', optional($currentSession)->id)->first();
+        
+        // Shule ya dharura isije ikatokea null hata iweje
+        $firstSchoolId = DB::table('schools')->value('id') ?? 1;
 
         for ($day = 0; $day < 10; $day++) {
             $dates[] = $start->copy()->addDays($day)->format('Y-m-d');
         }
 
-        // Tunavuta mwanafunzi pamoja na school_id ya shule yake kwa kupiga JOIN ya haraka
-        $students = DB::table('students')
-            ->join('school_classes', 'students.classes', '=', 'school_classes.id')
+        // Tunachukua wanafunzi wa kawaida tu bila join ngumu kwanza
+        $students = DB::table('students')->select('id', 'classes')->get();
+        
+        // Ili mambo yawe haraka, tunatengeneza map ya class_id kwenda school_id mapema kabisa
+        $classToSchoolMap = DB::table('school_classes')
             ->join('branches', 'school_classes.branch_id', '=', 'branches.id')
-            ->select('students.id as student_id', 'students.classes as class_id', 'branches.school_id')
-            ->cursor();
+            ->pluck('branches.school_id', 'school_classes.id')
+            ->toArray();
 
         foreach ($students as $student) {
             $sampleDates = (array)array_rand(array_flip($dates), min(5, count($dates)));
+            
+            // Tunatafuta shule ya mwanafunzi huyu, isipopatikana tunaweka ile ya kwanza
+            $schoolId = $classToSchoolMap[$student->classes] ?? $firstSchoolId;
+
             foreach ($sampleDates as $date) {
+                // ILI POSTGRES ISICHANGANYE: Tunalazimisha mpangilio thabiti wa ma-column hapa
                 $attendanceData[] = [
-                    'student_id'          => $student->student_id,
-                    'class_id'            => $student->class_id,
-                    'school_id'           => $student->school_id, // <- TUMESAWASISHA HAPA! Sasa haitakaa null mkuu
-                    'academic_session_id' => optional($currentSession)->id,
-                    'semester_id'         => optional($currentSemester)->id,
+                    'school_id'           => (int)$schoolId, // Hakikisha ni integer thabiti
+                    'academic_session_id' => optional($currentSession)->id ?? 1,
+                    'class_id'            => (int)$student->classes,
+                    'semester_id'         => optional($currentSemester)->id ?? 1,
                     'date'                => $date,
                     'status'              => $faker->randomElement(['present', 'absent', 'late']),
-                    'created_at'          => now(),
-                    'updated_at'          => now(),
+                    'student_id'          => (int)$student->id,
+                    'created_at'          => now()->toDateTimeString(),
+                    'updated_at'          => now()->toDateTimeString(),
                 ];
 
                 if (count($attendanceData) >= 100) {
-                    $this->insertChunked('student_attendances', $attendanceData, 100);
+                    DB::table('student_attendances')->insert($attendanceData);
                     $attendanceData = [];
                 }
             }
         }
 
         if (!empty($attendanceData)) {
-            $this->insertChunked('student_attendances', $attendanceData, 100);
+            DB::table('student_attendances')->insert($attendanceData);
         }
     }
 
