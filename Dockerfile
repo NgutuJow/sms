@@ -48,8 +48,8 @@ WORKDIR /var/www/html
 # 5. Copy mradi wako mzima kwenda kwenye container
 COPY . /var/www/html
 
-# 6. Sakinisha Composer dependencies za production
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+# 6. Sakinisha Composer dependencies zote (pamoja na Faker ya seeder)
+RUN composer install --optimize-autoloader --no-interaction --no-progress
 
 # 7. Safisha Cache zote za Laravel zilizoganda
 RUN php artisan config:clear \
