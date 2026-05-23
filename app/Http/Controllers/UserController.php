@@ -59,7 +59,6 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'phone' => $request->phone,
         ]);
 
         if ($request->filled('password')) {
