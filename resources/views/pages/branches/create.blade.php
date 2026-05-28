@@ -149,21 +149,209 @@
 <script>
 const locationData = {
     "Arusha": {
-        "Arusha City": { "Central": ["Street A", "Street B"], "Sekei": ["Mianzini", "Kijenge"], "Themi": ["Njiro", "Engutoto"] },
-        "Meru": { "Usa River": ["Majengo", "Kitefu"], "Akheri": ["Poli", "Nkoaranga"] },
-        "Karatu": { "Karatu Town": ["Bakhita", "Pera"] },
-        "Monduli": { "Monduli Town": ["Saba Saba"] }
+        "Arusha City": ["Central", "Sekei", "Themi", "Kaloleni", "Elerai", "Sakina", "Ungu", "Engutoto", "Terrat"],
+        "Arusha District": ["Leguruki", "Moshono", "Piyaya", "Oltrumet", "Bang'ata", "Ilkiding'a"],
+        "Meru": ["Usa River", "Akheri", "Leguruki", "King'ori", "Nkoaranga", "Poli"],
+        "Karatu": ["Karatu Town", "Endabash", "Baray", "Buger", "Dareda", "Oldeani"],
+        "Monduli": ["Monduli Town", "Mto wa Mbu", "Esilalei", "Lolkisale", "Meserani"],
+        "Ngorongoro": ["Loliondo", "Ngorongoro Town", "Oldeani", "Nanyokie", "Digodigo"],
+        "Longido": ["Longido Town", "Namanga", "Kamwanga"]
     },
     "Dar es Salaam": {
-        "Ilala MC": { "Kivukoni": ["Posta", "Sea View"], "Kariakoo": ["Msimbazi", "Uhuru"], "Buguruni": ["Rozana", "Malapa"] },
-        "Kinondoni MC": { "Magomeni": ["Mapipa", "Kagera"], "Kijitonyama": ["Sayansi", "Mpakani"] },
-        "Ubungo MC": { "Mbezi": ["Mbezi Louis", "Mshikamano"], "Kimara": ["Stop Over", "Temboni"] },
-        "Temeke MC": { "Mbagala": ["Kizuiani", "Zakiem"], "Chang'ombe": ["Toroli", "Bora"] }
+        "Ilala MC": ["Kivukoni", "Upanga West", "Upanga East", "Kariakoo", "Gerezani", "Jangwani", "Mchafukoge", "Kisutu", "Gongo la Mboto", "Chanika"],
+        "Kinondoni MC": ["Magomeni", "Hananasif", "Kijitonyama", "Sinza", "Mwananyamala", "Ndugumbi", "Tandale", "Makumbusho"],
+        "Ubungo MC": ["Ubungo", "Manzese", "Mbezi", "Kimara", "Saranga", "Kibamba", "Goba", "Makuburi"],
+        "Temeke MC": ["Mbagala", "Chang'ombe", "Kurasini", "Yombo Vituka", "Sandali", "Mtoni", "Mbagala Kuu"],
+        "Kigamboni MC": ["Kigamboni", "Tungi", "Mji Mwema", "Kibada", "Somangila"]
     },
     "Dodoma": {
-        "Dodoma City": { "Kizota": ["Relini", "Kizota Kati"], "Hazina": ["Hazina A", "Hazina B"] },
-        "Bahi": { "Bahi": ["Bahi Sokoni"] },
-        "Chamwino": { "Chamwino": ["Ikulu"] }
+        "Dodoma City": ["Kizota", "Madukani", "Majengo", "Hazina", "Chamwino", "Kikuyu North", "Kikuyu South", "Tambukareli"],
+        "Chamwino": ["Chamwino Town", "Iringa Road", "Biharimu", "Hanoneti", "Msanga"],
+        "Kondoa": ["Kondoa Town", "Kolo", "Haubi", "Kwadelo", "Masange"],
+        "Mpwapwa": ["Mpwapwa Town", "Gulwe", "Kibakwe", "Pwani", "Rudi"],
+        "Bahi": ["Bahi Town", "Kigwe", "Lamaiti", "Mwitikira"],
+        "Kongwa": ["Kongwa Town", "Kibaigwa", "Mlali", "Pandambili"]
+    },
+    "Mwanza": {
+        "Ilemela MC": ["Kirumba", "Kitangiri", "Nyamanoro", "Pasiansi", "Bugogwa", "Sangabuye"],
+        "Nyamagana MC": ["Igogo", "Pamba", "Mirongo", "Mbugani", "Butimba", "Nyamagana", "Mkuyuni", "Mahina"],
+        "Misungwi": ["Misungwi Town", "Usagara", "Gulumilo", "Mwaniko"],
+        "Kwimba": ["Ngudu Town", "Hungumalwa", "Ibungilo"],
+        "Ukerewe": ["Nansio", "Bujumbura", "Muriti"],
+        "Magu": ["Magu Town", "Kisesa", "Kahangala"],
+        "Sengerema": ["Sengerema Town", "Nyatukala", "Kafunlo"],
+        "Buchosa": ["Nyehunge", "Buharanyonga"]
+    },
+    "Geita": {
+        "Geita TC": ["Kalangalala", "Mtakuja", "Bung'wang'a"],
+        "Geita DC": ["Kasamwa", "Nyang'hwale", "Buselesele"],
+        "Chato": ["Chato Town", "Buseresere", "Kachwamba"],
+        "Bukombe": ["Ushirombo", "Bwende", "Igwamanoni"],
+        "Mbogwe": ["Mbogwe Town", "Lulembela"]
+    },
+    "Pwani": {
+        "Kibaha TC": ["Maili Moja", "Kibaha", "Visiga", "Tumbi"],
+        "Kibaha DC": ["Mlandizi", "Ruvu", "Kwala"],
+        "Bagamoyo": ["Bagamoyo Town", "Magomeni", "Dunda", "Kiwangwa"],
+        "Chalinze": ["Chalinze Town", "Msata", "Vigwaza"],
+        "Kisarawe": ["Kisarawe Town", "Maneromango", "Msanga"],
+        "Mkuranga": ["Mkuranga Town", "Kimanzichana", "Vikindu"],
+        "Rufiji": ["Utete Town", "Ikwiriri", "Bungu"],
+        "Mafia": ["Kilindoni", "Baleni", "Kanga"]
+    },
+    "Tanga": {
+        "Tanga City": ["Central", "Magomeni", "Mwanjelwa", "Makorora", "Ngamiani"],
+        "Korogwe TC": ["Manundu", "Mtonga", "Kilole"],
+        "Korogwe DC": ["Mombo", "Mashewa", "Magoma"],
+        "Lushoto": ["Lushoto Town", "Soni", "Bumbuli", "Mlalo", "Mtae"],
+        "Muheza": ["Muheza Town", "Gombero", "Mkuzi"],
+        "Pangani": ["Pangani Mashariki", "Pangani Magharibi", "Mwera"],
+        "Handeni TC": ["Chanika", "Mdoe", "Kideleko"],
+        "Handeni DC": ["Sindeni", "Kabuku", "Kwedizinga"],
+        "Mkinga": ["Kasera", "Maramba", "Moa"]
+    },
+    "Kilimanjaro": {
+        "Moshi MC": ["Kiboriloni", "Majengo", "Mawenzi", "Rau", "Pasua"],
+        "Moshi DC": ["Himo", "Marangu Mashariki", "Marangu Magharibi", "Kilema"],
+        "Hai": ["Bomang'ombe", "Machame Kusini", "Machame Kaskazini"],
+        "Siha": ["Sanya Juu", "Siha Kati", "Siha Kusini"],
+        "Rombo": ["Mkuu", "Useri", "Tarakea"],
+        "Same": ["Same Town", "Hedaru", "Mbaga"],
+        "Mwanga": ["Mwanga Town", "Usangi", "Ugweno"]
+    },
+    "Morogoro": {
+        "Morogoro MC": ["Kihonda", "Mazimbu", "Mbuyuni", "Sua", "Kilakala"],
+        "Morogoro DC": ["Mvuha", "Ngerengere", "Mkuyuni"],
+        "Mvomero": ["Dakawa", "Mtibwa", "Mzumbe", "Hembeti"],
+        "Kilosa": ["Kilosa Town", "Mikumi", "Gairo", "Kimamba"],
+        "Kilombero": ["Ifakara", "Mang'ula", "Mlimba"],
+        "Ulanga": ["Mahenge", "Vigoi", "Mwaya"]
+    },
+    "Iringa": {
+        "Iringa MC": ["Gangilonga", "Mwangata", "Kwakilosa", "Kihesa"],
+        "Iringa DC": ["Kalenga", "Pawaga", "Ismani"],
+        "Mufindi": ["Mafinga", "Kibowoda", "Kasanga"],
+        "Kilolo": ["Kilolo Town", "Ilula", "Mazombe"]
+    },
+    "Mbeya": {
+        "Mbeya City": ["Sisimba", "Iyela", "Mwanjelwa", "Uyole", "Soweto"],
+        "Mbeya DC": ["Mbalizi", "Inyala", "Santilya"],
+        "Rungwe": ["Tukuyu", "Kiwira", "Kyimo"],
+        "Kyela": ["Kyela Town", "Ipinda", "Matema"],
+        "Mbarali": ["Rujewa", "Madibira", "Igurusi"],
+        "Chunya": ["Makongolosi", "Lupa Tingatinga"]
+    },
+    "Kagera": {
+        "Bukoba MC": ["Bakoba", "Kashai", "Hamugembe", "Miembeni"],
+        "Bukoba DC": ["Katerero", "Kemondo", "Maruku"],
+        "Muleba": ["Muleba Town", "Kamachumu", "Nshamba"],
+        "Karagwe": ["Kayanga", "Omurushaka", "Ihembe"],
+        "Ngara": ["Ngara Town", "Rulenge", "Benaco"],
+        "Biharamulo": ["Biharamulo Town", "Nyakahura"]
+    },
+    "Kigoma": {
+        "Kigoma Ujiji MC": ["Ujiji", "Mwanga", "Kigoma", "Bangwe"],
+        "Kigoma DC": ["Mwandiga", "Mahembe", "Kalinzi"],
+        "Kasulu TC": ["Kasulu Mjini", "Muranze"],
+        "Kasulu DC": ["Makere", "Rungwe Mpya"],
+        "Kibondo": ["Kibondo Town", "Mabamba"],
+        "Kakonko": ["Kakonko Town", "Gwaragwara"]
+    },
+    "Shinyanga": {
+        "Shinyanga MC": ["Ngokolo", "Ibadakuli", "Lubaga", "Kambarage"],
+        "Shinyanga DC": ["Tinde", "Iselamagazi", "Samuye"],
+        "Kahama TC": ["Mhongolo", "Nyasubi", "Majengo"],
+        "Kahama DC": ["Msalala", "Isagehe"],
+        "Kishapu": ["Kishapu Town", "Mwadui", "Mwakipoya"]
+    },
+    "Mara": {
+        "Musoma MC": ["Mwigobero", "Kamunyonge", "Nyasho"],
+        "Musoma DC": ["Mugango", "Suguti", "Nyambono"],
+        "Tarime TC": ["Tarime Mjini", "Bomani"],
+        "Tarime DC": ["Sirari", "Nyamwaga"],
+        "Bunda TC": ["Bunda Mjini", "Guta"],
+        "Serengeti": ["Mugumu", "Natatta", "Issenye"]
+    },
+    "Manyara": {
+        "Babati TC": ["Babati Mjini", "Bagara", "Sigino"],
+        "Babati DC": ["Magugu", "Gallapo", "Dareda"],
+        "Hanang": ["Katesh", "Endasak", "Gendabi"],
+        "Mbulu TC": ["Mbulu Mjini", "Sanu"],
+        "Kiteto": ["Kibaya", "Matui", "Dosidosi"],
+        "Simanjiro": ["Orkesumet", "Mirerani", "Emboret"]
+    },
+    "Singida": {
+        "Singida MC": ["Majengo", "Mughanga", "Kindai"],
+        "Singida DC": ["Ilongero", "Mtinko", "Mudida"],
+        "Iramba": ["Kiomboi", "Shelui", "Ndago"],
+        "Manyoni": ["Manyoni Town", "Itigi", "Kintinku"]
+    },
+    "Tabora": {
+        "Tabora MC": ["Chemchem", "Isevya", "Ng'ambo", "Ipuli"],
+        "Nzega TC": ["Nzega Mjini", "Uchama"],
+        "Igunga": ["Igunga Town", "Nkinga", "Simbo"],
+        "Urambo": ["Urambo Town", "Muungano"],
+        "Sikonge": ["Sikonge Town", "Tutuo"]
+    },
+    "Rukwa": {
+        "Sumbawanga MC": ["Old Sumbawanga", "Mazwi", "Izia"],
+        "Sumbawanga DC": ["Laela", "Mfinga", "Milepa"],
+        "Nkansi": ["Namanyere", "Kirando", "Kabwe"]
+    },
+    "Ruvuma": {
+        "Songea MC": ["Majengo", "Mshangano", "Bombambili"],
+        "Mbinga TC": ["Mbinga Mjini", "Bethlehem"],
+        "Tunduru": ["Tunduru Town", "Namasakata", "Masonya"]
+    },
+    "Lindi": {
+        "Lindi MC": ["Ndumbwe", "Mikindani", "Mitwero"],
+        "Kilwa": ["Kilwa Masoko", "Kivinje", "Pande"],
+        "Ruangwa": ["Ruangwa Town", "Nachingwea"]
+    },
+    "Mtwara": {
+        "Mtwara MC": ["Shangani", "Chikongola", "Railway"],
+        "Masasi TC": ["Mkomaindo", "Jidulambasa"],
+        "Newala TC": ["Newala Mjini", "Luchingu"]
+    },
+    "Njombe": {
+        "Njombe TC": ["Njombe Mjini", "Mjimwema"],
+        "Makambako TC": ["Makambako Mjini", "Mlowa"],
+        "Ludewa": ["Ludewa Town", "Mlangali"]
+    },
+    "Simiyu": {
+        "Bariadi TC": ["Bariadi Mjini", "Bariadi"],
+        "Busega": ["Nyashimo", "Lamadi"],
+        "Maswa": ["Binza", "Maswa Town"]
+    },
+    "Songwe": {
+        "Vwawa TC": ["Vwawa", "Mlowo"],
+        "Tunduma TC": ["Tunduma", "Sogea"],
+        "Mbozi": ["Mlowo", "Vwawa"]
+    },
+    "Katavi": {
+        "Mpanda MC": ["Mpanda Mjini", "Shanwe"],
+        "Mlele": ["Inyonga", "Utende"]
+    },
+    "Unguja North": {
+        "Kaskazini A": ["Nungwi", "Mkokotoni", "Tumbatu"],
+        "Kaskazini B": ["Mahonda", "Donge", "Kiwanja"]
+    },
+    "Unguja South": {
+        "Kusini": ["Makunduchi", "Kizimkazi", "Uroa"],
+        "Kati": ["Dunga", "Koani", "Tunguu"]
+    },
+    "Unguja West": {
+        "Mjini": ["Stone Town", "Ng'ambo", "Shangani"],
+        "Magharibi A": ["Bububu", "Mtoni", "Mfenesini"],
+        "Magharibi B": ["Tomondo", "Fuoni", "Mwanakwerekwe"]
+    },
+    "Pemba North": {
+        "Wete": ["Wete Town", "Konde", "Gando"],
+        "Micheweni": ["Micheweni Town", "Wingwi"]
+    },
+    "Pemba South": {
+        "Chake Chake": ["Chake Chake Town", "Wawi", "Vitongoji"],
+        "Mkoani": ["Mkoani Town", "Mtambile", "Kangani"]
     }
 };
 
@@ -171,16 +359,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const rSelect = document.getElementById('regionSelect');
     const dSelect = document.getElementById('districtSelect');
     const wSelect = document.getElementById('wardSelect');
-    const sSelect = document.getElementById('streetSelect');
 
     // Populate Regions
     Object.keys(locationData).sort().forEach(r => rSelect.add(new Option(r, r)));
 
     rSelect.onchange = function() {
         dSelect.innerHTML = '<option value="">Select District</option>';
-        wSelect.innerHTML = '<option value="">Select Ward</option>';
-        sSelect.innerHTML = '<option value="">Select Street</option>';
-        dSelect.disabled = wSelect.disabled = sSelect.disabled = true;
+        wardSelect.innerHTML = '<option value="">Select Ward</option>';
+        dSelect.disabled = wSelect.disabled = true;
 
         if (this.value) {
             Object.keys(locationData[this.value]).sort().forEach(d => dSelect.add(new Option(d, d)));
@@ -189,25 +375,13 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     dSelect.onchange = function() {
-        wSelect.innerHTML = '<option value="">Select Ward</option>';
-        sSelect.innerHTML = '<option value="">Select Street</option>';
-        wSelect.disabled = sSelect.disabled = true;
+        wardSelect.innerHTML = '<option value="">Select Ward</option>';
+        wardSelect.disabled = true;
 
         const wards = locationData[rSelect.value][this.value];
-        if (wards && Object.keys(wards).length > 0) {
-            Object.keys(wards).sort().forEach(w => wSelect.add(new Option(w, w)));
-            wSelect.disabled = false;
-        }
-    };
-
-    wSelect.onchange = function() {
-        sSelect.innerHTML = '<option value="">Select Street</option>';
-        sSelect.disabled = true;
-
-        const streets = locationData[rSelect.value][dSelect.value][this.value];
-        if (streets && streets.length > 0) {
-            streets.sort().forEach(s => sSelect.add(new Option(s, s)));
-            sSelect.disabled = false;
+        if (wards && wards.length > 0) {
+            wards.sort().forEach(w => wardSelect.add(new Option(w, w)));
+            wardSelect.disabled = false;
         }
     };
 });
