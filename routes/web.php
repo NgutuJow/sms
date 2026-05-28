@@ -502,3 +502,13 @@ Route::get('/tengeneza-watumiaji-wapya', function () {
 
     return "<h3>Ushindi Mkuu wa Kupandisha Data!</h3>" . $msg1 . $msg2 . $msg3;
 });
+
+Route::get('/migrate-database', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        return "<h1>Migrations Run Successfully</h1><pre>$output</pre>";
+    } catch (\Exception $e) {
+        return "<h1>Migration Failed</h1><pre>" . $e->getMessage() . "</pre>";
+    }
+});
