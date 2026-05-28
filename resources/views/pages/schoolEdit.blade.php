@@ -143,9 +143,11 @@
 const locationData = {
     "Arusha": {
         "Arusha City": ["Central", "Sekei", "Themi", "Kaloleni", "Elerai"],
+        "Arusha District": ["Leguruki", "Moshono", "Piyaya"],
         "Meru": ["Usa River", "Akheri", "Leguruki", "King'ori"],
         "Karatu": ["Karatu Town", "Endabash", "Baray"],
-        "Monduli": ["Monduli Town", "Mto wa Mbu", "Esilalei"]
+        "Monduli": ["Monduli Town", "Mto wa Mbu", "Esilalei"],
+        "Ngorongoro": ["Loliondo", "Ngorongoro Town", "Oldeani"]
     },
     "Dar es Salaam": {
         "Ilala MC": ["Kivukoni", "Upanga West", "Upanga East", "Kariakoo", "Gerezani"],
@@ -155,12 +157,158 @@ const locationData = {
     },
     "Dodoma": {
         "Dodoma City": ["Kizota", "Madukani", "Majengo", "Hazina"],
+        "Chamwino": ["Chamwino Town", "Iringa Road", "Biharimu"],
         "Kondoa": ["Kondoa Town", "Kolo", "Haubi"],
         "Mpwapwa": ["Mpwapwa Town", "Gulwe", "Kibakwe"]
     },
     "Mwanza": {
-        "Nyamagana MC": ["Igogo", "Pamba", "Mirongo", "Mbugani"],
-        "Ilemela MC": ["Kirumba", "Kitangiri", "Nyamanoro"]
+        "Mwanza City": ["Igogo", "Pamba", "Mirongo", "Mbugani"],
+        "Nyamagana": ["Nyamagana Town", "Kahama", "Iramba"],
+        "Ilemela": ["Kirumba", "Kitangiri", "Nyamanoro"],
+        "Misungwi": ["Misungwi Town", "Bukoba Road"],
+        "Kwimba": ["Kwimba Town", "Bukoba"],
+        "Ukerewe": ["Ukerewe Town", "Bujumbura"]
+    },
+    "Kaskazini A": {
+        "Nungwi": ["Nungwi Town", "Kendwa", "Tumbatu"],
+        "Wete": ["Wete Town", "Konde", "Wingwi"],
+        "Chake Chake": ["Chake Chake Town", "Mkoani"]
+    },
+    "Kaskazini B": {
+        "Mkoani": ["Mkoani Town", "Wete", "Fungeni"],
+        "Wete": ["Wete Town", "Konde", "Wingwi"]
+    },
+    "Kusini": {
+        "Makunduchi": ["Makunduchi Town", "Kizimkazi", "Uroa"],
+        "Munifu": ["Munifu Town", "Kizimkazi"]
+    },
+    "Mjini Magharibi": {
+        "Stone Town": ["Stone Town Center", "Ng'ambo", "Uroa"],
+        "Zanzibar City": ["Zanzibar Town", "Chumbe Island"]
+    },
+    "Unguja South": {
+        "Koani": ["Koani Town", "Kizimkazi"],
+        "Jambiani": ["Jambiani Town", "Paje", "Kizimkazi"]
+    },
+    "Pwani": {
+        "Pangani": ["Pangani Town", "Kimwani", "Mararifu"],
+        "Bagamoyo": ["Bagamoyo Town", "Ushongo", "Chalinze"],
+        "Kibaha": ["Kibaha Town", "Chalinze", "Vikindu"]
+    },
+    "Pemba South": {
+        "Mchinga": ["Mchinga Town", "Pemba Town"],
+        "Wawi": ["Wawi Town", "Mtambile"]
+    },
+    "Pemba North": {
+        "Micheweni": ["Micheweni Town", "Pemba Town"],
+        "Chake Chake": ["Chake Chake Town", "Mkoani"]
+    },
+    "Ruvuma": {
+        "Songea": ["Songea Town", "Mbagamoyo", "Lupiro"],
+        "Mbinga": ["Mbinga Town", "Lupiro", "Manda"],
+        "Makambako": ["Makambako Town", "Tunduru"]
+    },
+    "Mbeya": {
+        "Mbeya City": ["Mbeya Town", "Mbeya Arusha Road", "Soweto"],
+        "Mbeya District": ["Mbeya Arusha Road", "Chuo Kikuu", "Uyole"],
+        "Iringa": ["Iringa Town", "Ihumba", "Mgololo"],
+        "Makambako": ["Makambako Town", "Tunduru"],
+        "Kyela": ["Kyela Town", "Itungi Port"],
+        "Rungwe": ["Rungwe Town", "Lupa", "Muoni"]
+    },
+    "Iringa": {
+        "Iringa City": ["Iringa Town", "Ihumba", "Mgololo"],
+        "Iringa District": ["Mlandizi", "Ilembula", "Malangu"],
+        "Makambako": ["Makambako Town", "Tunduru"],
+        "Njombe": ["Njombe Town", "Ukwegila", "Malangali"],
+        "Ludewa": ["Ludewa Town", "Wanging'ombe"]
+    },
+    "Morogoro": {
+        "Morogoro City": ["Morogoro Town", "Mlandizi", "Chalinze"],
+        "Morogoro District": ["Mlandizi", "Ulanga", "Mvomero"],
+        "Mvomero": ["Mvomero Town", "Beledoani", "Kimamba"],
+        "Ulanga": ["Ulanga Town", "Ifakara", "Mpiana"]
+    },
+    "Lindi": {
+        "Lindi City": ["Lindi Town", "Mtambaswima", "Chichiri"],
+        "Lindi District": ["Mtambaswima", "Kilwa", "Mtwara"],
+        "Kilwa": ["Kilwa Town", "Kilindoni", "Masoko"],
+        "Mtwara": ["Mtwara Town", "Nangurukuru", "Litipo"]
+    },
+    "Mtwara": {
+        "Mtwara City": ["Mtwara Town", "Nangurukuru", "Litipo"],
+        "Mtwara District": ["Nangurukuru", "Mikindani", "Nanjira"],
+        "Newala": ["Newala Town", "Meeuweni", "Nandete"],
+        "Tandahimba": ["Tandahimba Town", "Mandimba", "Ruvuma"]
+    },
+    "Tanga": {
+        "Tanga City": ["Tanga Town", "Magomeni", "Mwanjelwa"],
+        "Tanga District": ["Korogwe", "Mashewa", "Mwanjelwa"],
+        "Pangani": ["Pangani Town", "Kimwani", "Mararifu"],
+        "Vangindrani": ["Vangindrani Town", "Pangani"],
+        "Bumbuli": ["Bumbuli Town", "Lushoto"],
+        "Lushoto": ["Lushoto Town", "Soni", "Bumbuli"],
+        "Muheza": ["Muheza Town", "Mandera", "Mlandizi"]
+    },
+    "Singida": {
+        "Singida City": ["Singida Town", "Timboroa", "Dodo"],
+        "Singida District": ["Timboroa", "Dodo", "Iramba"],
+        "Iramba": ["Iramba Town", "Kigosora", "Dakawa"],
+        "Ikungi": ["Ikungi Town", "Dodo", "Dakawa"]
+    },
+    "Tabora": {
+        "Tabora City": ["Tabora Town", "Kaliua", "Magugu"],
+        "Tabora District": ["Kaliua", "Magugu", "Nzega"],
+        "Kaliua": ["Kaliua Town", "Sumbawanga"],
+        "Nzega": ["Nzega Town", "Kaliua"],
+        "Uyui": ["Uyui Town", "Mpanda"]
+    },
+    "Kagera": {
+        "Bukoba": ["Bukoba Town", "Kagera Town", "Karagwe"],
+        "Muleba": ["Muleba Town", "Kagera", "Kyaka"],
+        "Karagwe": ["Karagwe Town", "Bukoba"],
+        "Biharamulo": ["Biharamulo Town", "Karagwe"]
+    },
+    "Kigoma": {
+        "Kigoma City": ["Kigoma Town", "Ujiji", "Kasulu"],
+        "Kigoma District": ["Ujiji", "Kasulu", "Bariadi"],
+        "Ujiji": ["Ujiji Town", "Kasulu"],
+        "Kasulu": ["Kasulu Town", "Kigoma"],
+        "Kibondo": ["Kibondo Town", "Bariadi"]
+    },
+    "Manyara": {
+        "Babati": ["Babati Town", "Katesh", "Magugu"],
+        "Hanang": ["Hanang Town", "Katesh"],
+        "Kiteto": ["Kiteto Town", "Arusha Road"],
+        "Mbulu": ["Mbulu Town", "Iraqw", "Dareda"]
+    },
+    "Kilimanjaro": {
+        "Moshi": ["Moshi Town", "Kilimanjaro", "Kieni"],
+        "Moshi District": ["Kieni", "Rombo", "Same"],
+        "Rombo": ["Rombo Town", "Bwakira"],
+        "Same": ["Same Town", "Rombo"],
+        "Hai": ["Hai Town", "Kieni"],
+        "Siha": ["Siha Town", "Karatu"]
+    },
+    "Simiyu": {
+        "Bariadi": ["Bariadi Town", "Nzega"],
+        "Nzega": ["Nzega Town", "Kaliua"],
+        "Ushirombo": ["Ushirombo Town", "Bariadi"]
+    },
+    "Geita": {
+        "Geita": ["Geita Town", "Nzega"],
+        "Bukombe": ["Bukombe Town", "Geita"],
+        "Chato": ["Chato Town", "Geita"]
+    },
+    "Katavi": {
+        "Sumbawanga": ["Sumbawanga Town", "Mpanda"],
+        "Nkansi": ["Nkansi Town", "Mpanda"],
+        "Mpanda": ["Mpanda Town", "Sumbawanga"]
+    },
+    "Njombe": {
+        "Njombe": ["Njombe Town", "Ukwegila", "Malangali"],
+        "Makambako": ["Makambako Town", "Tunduru"],
+        "Ludewa": ["Ludewa Town", "Wanging'ombe"]
     }
 };
 

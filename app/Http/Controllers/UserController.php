@@ -26,19 +26,25 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'string', 'in:admin,teacher,accountant,guardian,student'],
-            // 'phone' => ['nullable', 'string', 'max:20'],
+            'role' => ['required', 'string', 'in:admin,teacher,accountant,guardian,student,parent'],
         ]);
 
+        // Hatoweka phone hapa kwa kuwa haipo kwenye table la users kwenye Postgres
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            // 'phone' => $request->phone,
         ]);
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
+    }
+
+    // --- TUMEONGEZA HII METHOD ILI KUONDOA ILE ERROR YA "show does not exist" ---
+    public function show(User $user)
+    {
+        // Kwa sasa tuna-redirect tu kwenda edit ili isilete blank page au kosa
+        return redirect()->route('users.edit', $user);
     }
 
     public function edit(User $user)
@@ -51,15 +57,13 @@ class UserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'role' => ['required', 'string', 'in:admin,teacher,accountant,guardian,student'],
-            // 'phone' => ['nullable', 'string', 'max:20'],
+            'role' => ['required', 'string', 'in:admin,teacher,accountant,guardian,student,parent'],
         ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            // 'phone' => $request->phone,
         ]);
 
         if ($request->filled('password')) {

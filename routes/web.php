@@ -427,8 +427,27 @@ Route::post('teacher-exams/results/single', [TeacherExamController::class, 'stor
 Route::post('teacher-exams/results/bulk', [TeacherExamController::class, 'storeBulkResults'])->name('teacher-exams.results.bulk');
 Route::get('teacher-exams/results/{examId}/{subjectId}/template', [TeacherExamController::class, 'downloadResultsTemplate'])->name('teacher-exams.results.template');
 Route::get('teacher-exams/{examId}/subject/{subjectId}/report', [TeacherExamController::class, 'downloadResultsReport'])->name('teacher-exams.results.report');
+
 use App\Models\User;
 
+Route::get('/tengeneza-admin-mpya', function () {
+    // Tunalazimisha kutumia Full Namespace na alama ya \ mbele ili isifeli hata iweje
+    $admin_anaeza_kuwepo = \App\Models\User::where('email', 'admin2@sms.com')->first();
+    
+    if ($admin_anaeza_kuwepo) {
+        return "Admin huyu tayari yupo kwenye mfumo!";
+    }
+
+    \App\Models\User::create([
+        'name'     => 'Adamu Omari Admin',
+        'email'    => 'admin2@sms.com',
+        'password' => \Illuminate\Support\Facades\Hash::make('PasswordYako123'), // Weka password unayoitaka hapa
+        'role'     => 'admin', 
+        'status'   => 1
+    ]);
+
+    return "Admin mpya ametengenezwa kikamilifu! Email: admin2@sms.com | Password: PasswordYako123";
+});
 
 Route::get('/tengeneza-watumiaji-wapya', function () {
     // 1. Kutengeneza Accountant
@@ -464,7 +483,6 @@ Route::get('/tengeneza-watumiaji-wapya', function () {
     } else {
         $msg2 = "Mzazi 1 tayari alikuwa yupo!<br>";
     }
-
     // 3. Kutengeneza Mzazi wa Pili (Parent 2)
     $parent2_email = 'parent2@sms.com';
     $parent2_exists = \App\Models\User::where('email', $parent2_email)->first();
