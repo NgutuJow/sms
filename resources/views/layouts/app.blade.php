@@ -154,62 +154,69 @@
 <aside class="sidebar" id="sidebarMenu">
     <div class="sidebar-brand">
         <div class="bg-primary text-white rounded me-2 d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; font-size: 14px;">S</div>
-        <span>{{ auth()->user()->hasRole('accountant') ? 'Finance Portal' : 'School Admin' }}</span>
+        <span>{{ auth()->check() && auth()->user()->hasRole('accountant') ? 'Finance Portal' : 'School Admin' }}</span>
     </div>
 
-    @if(auth()->user()->hasRole('admin'))
-    <div class="nav-section-label">Main Menu</div>
-    <nav class="nav flex-column">
-        <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}" href="/dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-        <a class="nav-link {{ request()->is('school*') ? 'active' : '' }}" href="/school"><i class="fa-solid fa-school"></i> School</a>
-        <a class="nav-link {{ request()->is('users*') ? 'active' : '' }}" href="{{ route('users.index') }}"><i class="fa-solid fa-users"></i> User Management</a>
-        <a class="nav-link {{ request()->is('teachers*') ? 'active' : '' }}" href="/teachers"><i class="fa-solid fa-chalkboard-user"></i> Teachers</a>
-        <a class="nav-link {{ request()->is('academic*') && !request()->is('academic/attendance*') ? 'active' : '' }}" href="/academic"><i class="fa-solid fa-book"></i> Academic</a>
-        <a class="nav-link {{ request()->is('students*') ? 'active' : '' }}" href="/students"><i class="fa-solid fa-user-graduate"></i> Students</a>
-    </nav>
-    @endif
-
-    <div class="nav-section-label">{{ auth()->user()->hasRole('accountant') ? 'Finance Management' : 'Management' }}</div>
-    <nav class="nav flex-column">
+    @auth
         @if(auth()->user()->hasRole('admin'))
-        <a class="nav-link {{ request()->is('exams*') ? 'active' : '' }}" href="/exams"><i class="fa-solid fa-file-signature"></i> Examinations</a>
-        <a class="nav-link {{ request()->is('promotions*') ? 'active' : '' }}" href="/promotions"><i class="fa-solid fa-arrow-up-right-dots"></i> Promotions</a>
-        <a class="nav-link {{ request()->routeIs('announcements.index') ? 'active' : '' }}" href="{{ route('announcements.index') }}"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
-        <a class="nav-link {{ request()->routeIs('chat.*') ? 'active' : '' }}" href="{{ route('chat.index') }}"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
+        <div class="nav-section-label">Main Menu</div>
+        <nav class="nav flex-column">
+            <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}" href="/dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+            <a class="nav-link {{ request()->is('school*') ? 'active' : '' }}" href="/school"><i class="fa-solid fa-school"></i> School</a>
+            <a class="nav-link {{ request()->is('users*') ? 'active' : '' }}" href="{{ route('users.index') }}"><i class="fa-solid fa-users"></i> User Management</a>
+            <a class="nav-link {{ request()->is('teachers*') ? 'active' : '' }}" href="/teachers"><i class="fa-solid fa-chalkboard-user"></i> Teachers</a>
+            <a class="nav-link {{ request()->is('academic*') && !request()->is('academic/attendance*') ? 'active' : '' }}" href="/academic"><i class="fa-solid fa-book"></i> Academic</a>
+            <a class="nav-link {{ request()->is('students*') ? 'active' : '' }}" href="/students"><i class="fa-solid fa-user-graduate"></i> Students</a>
+        </nav>
         @endif
-        
-        <a class="nav-link {{ request()->is('finance*') ? 'active' : '' }}" href="{{ route('finance.index') }}"><i class="fa-solid fa-wallet"></i> Finance</a>
-        
-        @if(auth()->user()->hasRole('admin'))
-        <a class="nav-link {{ request()->is('academic/attendance*') ? 'active' : '' }}" href="/academic/attendance"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+
+        <div class="nav-section-label">{{ auth()->user()->hasRole('accountant') ? 'Finance Management' : 'Management' }}</div>
+        <nav class="nav flex-column">
+            @if(auth()->user()->hasRole('admin'))
+            <a class="nav-link {{ request()->is('exams*') ? 'active' : '' }}" href="/exams"><i class="fa-solid fa-file-signature"></i> Examinations</a>
+            <a class="nav-link {{ request()->is('promotions*') ? 'active' : '' }}" href="/promotions"><i class="fa-solid fa-arrow-up-right-dots"></i> Promotions</a>
+            <a class="nav-link {{ request()->routeIs('announcements.index') ? 'active' : '' }}" href="{{ route('announcements.index') }}"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
+            <a class="nav-link {{ request()->routeIs('chat.*') ? 'active' : '' }}" href="{{ route('chat.index') }}"><i class="fa-brands fa-whatsapp"></i> WhatsApp Chat</a>
+            @endif
+            
+            <a class="nav-link {{ request()->is('finance*') ? 'active' : '' }}" href="{{ route('finance.index') }}"><i class="fa-solid fa-wallet"></i> Finance</a>
+            
+            @if(auth()->user()->hasRole('admin'))
+            <a class="nav-link {{ request()->is('academic/attendance*') ? 'active' : '' }}" href="/academic/attendance"><i class="fa-solid fa-calendar-check"></i> Attendance</a>
+            @endif
+        </nav>
+
+        @if(auth()->user()->hasRole('accountant'))
+        <div class="nav-section-label">Finance Quick Links</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="{{ route('finance.invoices') }}"><i class="fa-solid fa-file-invoice-dollar"></i> Invoices</a>
+            <a class="nav-link" href="{{ route('finance.expenses.index') }}"><i class="fa-solid fa-money-bill-transfer"></i> Expenses</a>
+            <a class="nav-link" href="{{ route('finance.payroll.index') }}"><i class="fa-solid fa-users-viewfinder"></i> Payroll</a>
+            <a class="nav-link" href="{{ route('finance.fee-structures.index') }}"><i class="fa-solid fa-list-check"></i> Fee Structures</a>
+        </nav>
         @endif
-    </nav>
 
-    @if(auth()->user()->hasRole('accountant'))
-    <div class="nav-section-label">Finance Quick Links</div>
-    <nav class="nav flex-column">
-        <a class="nav-link" href="{{ route('finance.invoices') }}"><i class="fa-solid fa-file-invoice-dollar"></i> Invoices</a>
-        <a class="nav-link" href="{{ route('finance.expenses.index') }}"><i class="fa-solid fa-money-bill-transfer"></i> Expenses</a>
-        <a class="nav-link" href="{{ route('finance.payroll.index') }}"><i class="fa-solid fa-users-viewfinder"></i> Payroll</a>
-        <a class="nav-link" href="{{ route('finance.fee-structures.index') }}"><i class="fa-solid fa-list-check"></i> Fee Structures</a>
-    </nav>
-    @endif
+        <div class="nav-section-label">Reports</div>
+        <nav class="nav flex-column mb-4">
+            <a class="nav-link {{ request()->routeIs('finance.reports') ? 'active' : '' }}" href="{{ route('finance.reports') }}"><i class="fa-solid fa-chart-line"></i> Financial Reports</a>
+            <a class="nav-link {{ request()->routeIs('finance.reports.year-end') ? 'active' : '' }}" href="{{ route('finance.reports.year-end') }}"><i class="fa-solid fa-calendar-alt"></i> Year-end Summary</a>
+            <a class="nav-link {{ request()->routeIs('finance.pdf-export.index') ? 'active' : '' }}" href="{{ route('finance.pdf-export.index') }}"><i class="fa-solid fa-file-pdf"></i> PDF Exports</a>
+        </nav>
 
-    <div class="nav-section-label">Reports</div>
-    <nav class="nav flex-column mb-4">
-        <a class="nav-link {{ request()->routeIs('finance.reports') ? 'active' : '' }}" href="{{ route('finance.reports') }}"><i class="fa-solid fa-chart-line"></i> Financial Reports</a>
-        <a class="nav-link {{ request()->routeIs('finance.reports.year-end') ? 'active' : '' }}" href="{{ route('finance.reports.year-end') }}"><i class="fa-solid fa-calendar-alt"></i> Year-end Summary</a>
-        <a class="nav-link {{ request()->routeIs('finance.pdf-export.index') ? 'active' : '' }}" href="{{ route('finance.pdf-export.index') }}"><i class="fa-solid fa-file-pdf"></i> PDF Exports</a>
-    </nav>
-
-    <div class="mt-auto border-top">
-        <form method="POST" action="{{ route('logout') }}" id="logout-form">
-            @csrf
-            <a class="nav-link my-3 text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                <i class="fa-solid fa-right-from-bracket"></i> Sign out
-            </a>
-        </form>
-    </div>
+        <div class="mt-auto border-top">
+            <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                @csrf
+                <a class="nav-link my-3 text-danger" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sign out
+                </a>
+            </form>
+        </div>
+    @else
+        <div class="nav-section-label">Authentication</div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="{{ route('login') }}"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+        </nav>
+    @endauth
 </aside>
 
 <header class="top-header">
@@ -223,24 +230,28 @@
     </div>
     
     <div class="d-flex align-items-center gap-3">
-        <i class="fa-regular fa-bell text-muted cursor-pointer"></i>
-        <div class="vr mx-1" style="height: 20px; color: var(--border)"></div>
-        <div class="dropdown">
-            <div class="d-flex align-items-center gap-2 cursor-pointer" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="fw-medium d-none d-sm-inline" style="font-size: var(--font-sm);">{{ auth()->user()->name ?? 'Admin User' }}</span>
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=32&background=f1f5f9&color=64748b" class="rounded-circle" width="30">
+        @auth
+            <i class="fa-regular fa-bell text-muted cursor-pointer"></i>
+            <div class="vr mx-1" style="height: 20px; color: var(--border)"></div>
+            <div class="dropdown">
+                <div class="d-flex align-items-center gap-2 cursor-pointer" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="fw-medium d-none d-sm-inline" style="font-size: var(--font-sm);">{{ auth()->user()->name ?? 'Admin User' }}</span>
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name) }}&size=32&background=f1f5f9&color=64748b" class="rounded-circle" width="30">
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item small fw-medium py-2" href="{{ route('password.change') }}"><i class="fas fa-key me-2 text-muted"></i> Change Password</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item small fw-medium py-2 text-danger border-0 bg-transparent w-100 text-start"><i class="fas fa-sign-out-alt me-2"></i> Sign Out</button>
+                        </form>
+                    </li>
+                </ul>
             </div>
-            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm rounded-3" aria-labelledby="profileDropdown">
-                <li><a class="dropdown-item small fw-medium py-2" href="{{ route('password.change') }}"><i class="fas fa-key me-2 text-muted"></i> Change Password</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="dropdown-item small fw-medium py-2 text-danger border-0 bg-transparent w-100 text-start"><i class="fas fa-sign-out-alt me-2"></i> Sign Out</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
+        @else
+            <a href="{{ route('login') }}" class="btn btn-primary btn-sm rounded-pill px-4 fw-bold">Login</a>
+        @endauth
     </div>
 </header>
 

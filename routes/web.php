@@ -178,101 +178,102 @@ Route::get('/dashboard', function () {
 })->middleware('auth');
 
 // School & Branches Management
-Route::resource('school', SchoolController::class);
-Route::get('/school/{school_id}/branches', [BranchController::class, 'index'])->name('school.branches');
-Route::get('/school/{school_id}/branches/create', [BranchController::class, 'create'])->name('branches.create');
-Route::post('/school/{school_id}/branches/store', [BranchController::class, 'store'])->name('branches.store');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('school', SchoolController::class);
+    Route::get('/school/{school_id}/branches', [BranchController::class, 'index'])->name('school.branches');
+    Route::get('/school/{school_id}/branches/create', [BranchController::class, 'create'])->name('branches.create');
+    Route::post('/school/{school_id}/branches/store', [BranchController::class, 'store'])->name('branches.store');
 
-Route::get('/branches/{id}/edit', [BranchController::class, 'edit'])->name('branches.edit');
-Route::put('/branches/{id}', [BranchController::class, 'update'])->name('branches.update');
-Route::delete('/branches/{id}', [BranchController::class, 'destroy'])->name('branches.destroy');
-Route::post('/branches/{id}/toggle-status', [BranchController::class, 'toggleStatus'])->name('branches.toggle');
+    Route::get('/branches/{id}/edit', [BranchController::class, 'edit'])->name('branches.edit');
+    Route::put('/branches/{id}', [BranchController::class, 'update'])->name('branches.update');
+    Route::delete('/branches/{id}', [BranchController::class, 'destroy'])->name('branches.destroy');
+    Route::post('/branches/{id}/toggle-status', [BranchController::class, 'toggleStatus'])->name('branches.toggle');
 
-// Teachers Management
-Route::resource('teachers', TeacherController::class);
-Route::post('teachers/{id}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('teachers.toggle');
+    // Teachers Management
+    Route::resource('teachers', TeacherController::class);
+    Route::post('teachers/{id}/toggle-status', [TeacherController::class, 'toggleStatus'])->name('teachers.toggle');
 
-// Academic Core Services Group
-Route::prefix('academic')->name('academic.')->group(function () {
-    // Main Dashboard
-    Route::get('/', [AcademicServiceController::class, 'index'])->name('index');
+    // Academic Core Services Group
+    Route::prefix('academic')->name('academic.')->group(function () {
+        // Main Dashboard
+        Route::get('/', [AcademicServiceController::class, 'index'])->name('index');
 
-    // Sessions & Semesters
-    Route::post('/session/store', [AcademicServiceController::class, 'storeSession'])->name('session.store');
-    Route::post('/semester/store', [AcademicServiceController::class, 'storeSemester'])->name('semester.store');
-    Route::post('/session/{id}/set-active', [AcademicServiceController::class, 'setSessionActive'])->name('session.active');
-    Route::post('/semester/{id}/set-active', [AcademicServiceController::class, 'setSemesterActive'])->name('semester.active');
-    Route::delete('/semester/{id}', [AcademicServiceController::class, 'destroySemester'])->name('semester.destroy');
-    Route::delete('/session/{id}', [AcademicServiceController::class, 'destroySession'])->name('session.destroy');
+        // Sessions & Semesters
+        Route::post('/session/store', [AcademicServiceController::class, 'storeSession'])->name('session.store');
+        Route::post('/semester/store', [AcademicServiceController::class, 'storeSemester'])->name('semester.store');
+        Route::post('/session/{id}/set-active', [AcademicServiceController::class, 'setSessionActive'])->name('session.active');
+        Route::post('/semester/{id}/set-active', [AcademicServiceController::class, 'setSemesterActive'])->name('semester.active');
+        Route::delete('/semester/{id}', [AcademicServiceController::class, 'destroySemester'])->name('semester.destroy');
+        Route::delete('/session/{id}', [AcademicServiceController::class, 'destroySession'])->name('session.destroy');
 
-    // Classes & Streams
-    Route::post('/class/store', [AcademicServiceController::class, 'storeClass'])->name('class.store');
-    Route::delete('/class/{id}', [AcademicServiceController::class, 'destroyClass'])->name('class.destroy');
-    Route::post('/stream/store', [AcademicServiceController::class, 'storeStream'])->name('stream.store');
-    Route::delete('/stream/{id}', [AcademicServiceController::class, 'destroyStream'])->name('stream.destroy');
+        // Classes & Streams
+        Route::post('/class/store', [AcademicServiceController::class, 'storeClass'])->name('class.store');
+        Route::delete('/class/{id}', [AcademicServiceController::class, 'destroyClass'])->name('class.destroy');
+        Route::post('/stream/store', [AcademicServiceController::class, 'storeStream'])->name('stream.store');
+        Route::delete('/stream/{id}', [AcademicServiceController::class, 'destroyStream'])->name('stream.destroy');
 
-    // Subjects
-    Route::post('/subject/store', [AcademicServiceController::class, 'storeSubject'])->name('subject.store');
+        // Subjects
+        Route::post('/subject/store', [AcademicServiceController::class, 'storeSubject'])->name('subject.store');
+    });
+
+    // Group ya Academic Features (Attendance, Timetable, Syllabus)
+    Route::prefix('academic')->name('academic.')->group(function () {
+
+        // --- 1. ATTENDANCE ROUTES ---
+        Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+        Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
+        Route::get('/attendance/review', [AttendanceController::class, 'review'])->name('attendance.review');
+        Route::get('/attendance/reports', [AttendanceController::class, 'reports'])->name('attendance.reports');
+        Route::get('/attendance/reports/download', [AttendanceController::class, 'downloadReport'])->name('attendance.reports.download');
+        Route::get('/attendance/report/{id}', [AttendanceController::class, 'studentReport'])->name('attendance.report');
+        Route::delete('/attendance/{date}/{stream_id}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
+
+        // AJAX route for streams
+        Route::get('/streams-by-class/{classId}', [AcademicServiceController::class, 'getStreamsByClass'])->name('streams.by.class');
+
+        // --- 2. TIMETABLE ROUTES ---
+        Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable.index');
+        Route::post('/timetable/store', [TimetableController::class, 'store'])->name('timetable.store');
+        Route::put('/timetable/{id}', [TimetableController::class, 'update'])->name('timetable.update');
+        Route::delete('/timetable/{id}', [TimetableController::class, 'destroy'])->name('timetable.destroy');
+
+        // --- 3. SYLLABUS ROUTES ---
+        Route::get('/syllabus', [SyllabusController::class, 'index'])->name('syllabus.index');
+        Route::post('/syllabus/store', [SyllabusController::class, 'store'])->name('syllabus.store');
+        Route::put('/syllabus/{id}', [SyllabusController::class, 'update'])->name('syllabus.update');
+        Route::delete('/syllabus/{id}', [SyllabusController::class, 'destroy'])->name('syllabus.destroy');
+    });
+
+    // Students Management
+    Route::get('/studentList', function () {
+        return view('pages.students.list');
+    });
+
+    Route::resource('students', StudentController::class);
+    Route::get('/students/class/{id}', [StudentController::class, 'classStudents'])->name('students.class');
+    Route::resource('subject-assignments', SubjectAssignmentController::class);
+
+    // Marks and Grading Section
+    Route::get('marks/students/{classId}', [MarkController::class, 'getStudents']);
+    Route::get('results', [MarkController::class, 'results'])->name('results.index');
+    Route::get('marks', [MarkController::class, 'index'])->name('marks.index');
+    Route::get('marks/create', [MarkController::class, 'create'])->name('marks.create');
+    Route::post('marks/store', [MarkController::class, 'store'])->name('marks.store');
+
+    // Exam Reports Routes
+    Route::get('exam-reports', [MarkController::class, 'examReports'])->name('exam-reports.index');
+    Route::get('exam-reports/student/{studentId}', [MarkController::class, 'studentExamReport'])->name('exam-reports.student');
+    Route::get('exam-reports/student/{studentId}/pdf', [MarkController::class, 'studentExamReportPdf'])->name('exam-reports.student.pdf');
+
+    // AJAX loaders and processing
+    Route::get('/marks/load-data', [MarkController::class, 'loadData'])->name('marks.load-data');
+    Route::get('/results/{class}/{exam}', [MarkController::class, 'processResults']);
+    Route::get('/promote/{class}/{exam}', [MarkController::class, 'promoteStudents']);
+
+    // Promotions
+    Route::resource('promotions', PromotionController::class);
+    Route::post('promotions/bulk-store', [PromotionController::class, 'bulkStore'])->name('promotions.bulkStore');
 });
-
-// Group ya Academic Features (Attendance, Timetable, Syllabus)
-Route::prefix('academic')->name('academic.')->group(function () {
-
-    // --- 1. ATTENDANCE ROUTES ---
-    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
-    Route::get('/attendance/review', [AttendanceController::class, 'review'])->name('attendance.review');
-    Route::get('/attendance/reports', [AttendanceController::class, 'reports'])->name('attendance.reports');
-    Route::get('/attendance/reports/download', [AttendanceController::class, 'downloadReport'])->name('attendance.reports.download');
-    Route::get('/attendance/report/{id}', [AttendanceController::class, 'studentReport'])->name('attendance.report');
-    Route::delete('/attendance/{date}/{stream_id}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
-
-    // AJAX route for streams
-    Route::get('/streams-by-class/{classId}', [AcademicServiceController::class, 'getStreamsByClass'])->name('streams.by.class');
-
-    // --- 2. TIMETABLE ROUTES ---
-    Route::get('/timetable', [TimetableController::class, 'index'])->name('timetable.index');
-    Route::post('/timetable/store', [TimetableController::class, 'store'])->name('timetable.store');
-    Route::put('/timetable/{id}', [TimetableController::class, 'update'])->name('timetable.update');
-    Route::delete('/timetable/{id}', [TimetableController::class, 'destroy'])->name('timetable.destroy');
-
-    // --- 3. SYLLABUS ROUTES ---
-    Route::get('/syllabus', [SyllabusController::class, 'index'])->name('syllabus.index');
-    Route::post('/syllabus/store', [SyllabusController::class, 'store'])->name('syllabus.store');
-    Route::put('/syllabus/{id}', [SyllabusController::class, 'update'])->name('syllabus.update');
-    Route::delete('/syllabus/{id}', [SyllabusController::class, 'destroy'])->name('syllabus.destroy');
-});
-
-// Students Management
-Route::get('/studentList', function () {
-    return view('pages.students.list');
-})->middleware('auth');
-
-Route::resource('students', StudentController::class);
-Route::get('/students/class/{id}', [StudentController::class, 'classStudents'])->name('students.class');
-Route::resource('exams', ExamController::class);
-Route::resource('subject-assignments', SubjectAssignmentController::class);
-
-// Marks and Grading Section
-Route::get('marks/students/{classId}', [MarkController::class, 'getStudents']);
-Route::get('results', [MarkController::class, 'results'])->name('results.index');
-Route::get('marks', [MarkController::class, 'index'])->name('marks.index');
-Route::get('marks/create', [MarkController::class, 'create'])->name('marks.create');
-Route::post('marks/store', [MarkController::class, 'store'])->name('marks.store');
-
-// Exam Reports Routes
-Route::get('exam-reports', [MarkController::class, 'examReports'])->name('exam-reports.index');
-Route::get('exam-reports/student/{studentId}', [MarkController::class, 'studentExamReport'])->name('exam-reports.student');
-Route::get('exam-reports/student/{studentId}/pdf', [MarkController::class, 'studentExamReportPdf'])->name('exam-reports.student.pdf');
-
-// AJAX loaders and processing
-Route::get('/marks/load-data', [MarkController::class, 'loadData'])->name('marks.load-data');
-Route::get('/results/{class}/{exam}', [MarkController::class, 'processResults']);
-Route::get('/promote/{class}/{exam}', [MarkController::class, 'promoteStudents']);
-
-// Promotions
-Route::resource('promotions', PromotionController::class);
-Route::post('promotions/bulk-store', [PromotionController::class, 'bulkStore'])->name('promotions.bulkStore');
 
 // Parent Guarded Dashboard Routes
 Route::middleware(['auth'])->group(function () {
