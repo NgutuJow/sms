@@ -433,7 +433,7 @@ use App\Models\User;
 
 Route::get('/tengeneza-admin-mpya', function () {
     // Tunalazimisha kutumia Full Namespace na alama ya \ mbele ili isifeli hata iweje
-    $admin_anaeza_kuwepo = \App\Models\User::where('email', 'admin2@sms.com')->first();
+    $admin_anaeza_kuwepo = \App\Models\User::where('email', 'admin3@sms.com')->first();
     
     if ($admin_anaeza_kuwepo) {
         return "Admin huyu tayari yupo kwenye mfumo!";
@@ -441,13 +441,13 @@ Route::get('/tengeneza-admin-mpya', function () {
 
     \App\Models\User::create([
         'name'     => 'Adamu Omari Admin',
-        'email'    => 'admin2@sms.com',
-        'password' => \Illuminate\Support\Facades\Hash::make('PasswordYako123'), // Weka password unayoitaka hapa
+        'email'    => 'admin3@sms.com',
+        'password' => \Illuminate\Support\Facades\Hash::make('password123'), // Weka password unayoitaka hapa
         'role'     => 'admin', 
         'status'   => 1
     ]);
 
-    return "Admin mpya ametengenezwa kikamilifu! Email: admin2@sms.com | Password: PasswordYako123";
+    return "Admin mpya ametengenezwa kikamilifu! Email: admin3@sms.com | Password: password123";
 });
 
 Route::get('/tengeneza-watumiaji-wapya', function () {

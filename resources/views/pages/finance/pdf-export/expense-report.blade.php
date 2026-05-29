@@ -185,7 +185,7 @@
         @php 
             $totalAmount = $expenses->sum('amount');
             $avgAmount = $expenses->count() > 0 ? $totalAmount / $expenses->count() : 0;
-            $topCategory = $expenses->groupBy('category')->map->sum('amount')->sortDesc()->head(1);
+            $topCategory = $expenses->groupBy('category')->map->sum('amount')->sortDesc()->take(1);
         @endphp
 
         <div class="summary-boxes">

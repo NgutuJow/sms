@@ -292,38 +292,58 @@ const locationData = {
         "Nkansi": ["Namanyere", "Kirando", "Kabwe"]
     },
     "Ruvuma": {
-        "Songea MC": ["Majengo", "Mshangano", "Bombambili"],
-        "Mbinga TC": ["Mbinga Mjini", "Bethlehem"],
-        "Tunduru": ["Tunduru Town", "Namasakata", "Masonya"]
+        "Songea MC": ["Majengo", "Mshangano", "Bombambili", "Nzereka", "Migoli"],
+        "Songea DC": ["Mlangali", "Kiberege", "Kilambo"],
+        "Mbinga TC": ["Mbinga Mjini", "Bethlehem", "Makurunge"],
+        "Mbinga DC": ["Lupiro", "Manda", "Nampiti"],
+        "Tunduru TC": ["Tunduru", "Namasakata", "Masonya"],
+        "Tunduru DC": ["Tunduru", "Makambako", "Ruvuma"]
     },
     "Lindi": {
-        "Lindi MC": ["Ndumbwe", "Mikindani", "Mitwero"],
-        "Kilwa": ["Kilwa Masoko", "Kivinje", "Pande"],
-        "Ruangwa": ["Ruangwa Town", "Nachingwea"]
+        "Lindi MC": ["Ndumbwe", "Mikindani", "Mitwero", "Likoma", "Chichiri"],
+        "Lindi DC": ["Mtama", "Kiwira", "Masasi"],
+        "Kilwa TC": ["Kilwa Masoko", "Kilindoni", "Masoko"],
+        "Kilwa DC": ["Kivinje", "Pande", "Nangurukuru"],
+        "Ruangwa TC": ["Ruangwa", "Nachingwea", "Mwaya"],
+        "Mtwara DC": ["Nangurukuru", "Mikindani"]
     },
     "Mtwara": {
-        "Mtwara MC": ["Shangani", "Chikongola", "Railway"],
-        "Masasi TC": ["Mkomaindo", "Jidulambasa"],
-        "Newala TC": ["Newala Mjini", "Luchingu"]
+        "Mtwara MC": ["Shangani", "Chikongola", "Railway", "Litipi", "Mlambo"],
+        "Mtwara DC": ["Mikindani", "Tandahimba", "Nanjira"],
+        "Masasi TC": ["Mkomaindo", "Jidulambasa", "Nambinga"],
+        "Masasi DC": ["Nachingwea", "Masasi"],
+        "Newala TC": ["Newala Mjini", "Luchingu", "Meeuweni"],
+        "Newala DC": ["Nandete", "Tandahimba"]
     },
     "Njombe": {
-        "Njombe TC": ["Njombe Mjini", "Mjimwema"],
-        "Makambako TC": ["Makambako Mjini", "Mlowa"],
-        "Ludewa": ["Ludewa Town", "Mlangali"]
+        "Njombe TC": ["Njombe Mjini", "Mjimwema", "Rujewa"],
+        "Njombe DC": ["Ukwegila", "Malangali", "Igima"],
+        "Makambako TC": ["Makambako Mjini", "Mlowa", "Matangali"],
+        "Makambako DC": ["Tunduru", "Mafinga"],
+        "Ludewa TC": ["Ludewa Town", "Mlangali", "Wanging'ombe"],
+        "Ludewa DC": ["Makambako", "Ludewa"]
     },
     "Simiyu": {
-        "Bariadi TC": ["Bariadi Mjini", "Bariadi"],
-        "Busega": ["Nyashimo", "Lamadi"],
-        "Maswa": ["Binza", "Maswa Town"]
+        "Bariadi TC": ["Bariadi Mjini", "Bariadi", "Iramba"],
+        "Bariadi DC": ["Nzega", "Ugaya"],
+        "Busega DC": ["Nyashimo", "Lamadi", "Misungwi"],
+        "Maswa TC": ["Binza", "Maswa Town", "Ngetani"],
+        "Maswa DC": ["Mwazye", "Mwakipoya"],
+        "Itilima DC": ["Itilima", "Shinyanga"]
     },
     "Songwe": {
-        "Vwawa TC": ["Vwawa", "Mlowo"],
-        "Tunduma TC": ["Tunduma", "Sogea"],
-        "Mbozi": ["Mlowo", "Vwawa"]
+        "Vwawa TC": ["Vwawa", "Mlowo", "Mwali"],
+        "Vwawa DC": ["Mbeya", "Vwawa"],
+        "Tunduma TC": ["Tunduma", "Sogea", "Mbeya"],
+        "Tunduma DC": ["Zunguluka", "Malawi"],
+        "Mbozi TC": ["Mlowo", "Vwawa", "Mbeya"],
+        "Mbozi DC": ["Mbeya", "Songwe"]
     },
     "Katavi": {
-        "Mpanda MC": ["Mpanda Mjini", "Shanwe"],
-        "Mlele": ["Inyonga", "Utende"]
+        "Mpanda MC": ["Mpanda Mjini", "Shanwe", "Malongano"],
+        "Mpanda DC": ["Sumbawanga", "Milepa"],
+        "Mlele DC": ["Inyonga", "Utende", "Mporokoso"],
+        "Nkansi DC": ["Namanyere", "Kirando", "Kabwe"]
     },
     "Unguja North": {
         "Kaskazini A": ["Nungwi", "Mkokotoni", "Tumbatu"],
