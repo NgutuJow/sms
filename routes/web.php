@@ -388,8 +388,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/teacher/syllabus/{id}/update-status', [TeacherAttendanceController::class, 'updateSyllabusStatus'])->name('syllabus.updateStatus');
 
     // Announcements Routes
+    Route::get('/announcements/download/{id}', [AnnouncementController::class, 'downloadPdf'])->name('announcements.download');
+    Route::get('/announcements/downloads/{id}', [AnnouncementController::class, 'downloadPdf']); // Plural alias
     Route::resource('announcements', AnnouncementController::class);
-    Route::get('/announcements/download/{announcement}', [AnnouncementController::class, 'downloadPdf'])->name('announcements.download');
 
     // Parent-Staff Chat Logs
     Route::prefix('chat')->name('chat.')->group(function () {

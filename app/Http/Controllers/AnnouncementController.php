@@ -161,7 +161,11 @@ class AnnouncementController extends Controller
      */
     public function downloadPdf($id)
     {
-        $announcement = Announcement::findOrFail($id);
+        $announcement = Announcement::find($id);
+
+        if (!$announcement) {
+            return back()->with('error', 'Tangazo hili halikupatikana kwenye mfumo.');
+        }
 
         if (!$announcement->pdf_path) {
             return back()->with('error', 'Hili tangazo halina faili la PDF.');
