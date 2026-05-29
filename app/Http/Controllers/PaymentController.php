@@ -22,7 +22,12 @@ class PaymentController extends Controller
 
     public function checkout($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::find($id);
+        
+        if (!$student) {
+            return redirect()->route('dashboard')->with('error', 'Error: Student record not found (ID: ' . $id . ').');
+        }
+
         $invoice = Invoice::where('student_id', $id)
                     ->where('balance', '>', 0)
                     ->orderBy('created_at', 'desc')
@@ -55,11 +60,19 @@ class PaymentController extends Controller
         ]);
 
         try {
-            $invoice = Invoice::with('student')->findOrFail($request->invoice_id);
+            Log::info('Attempting to find Invoice', ['invoice_id' => $request->invoice_id]);
+            $invoice = Invoice::with('student')->find($request->invoice_id);
+            
+            if (!$invoice) {
+                Log::error('Invoice not found', ['id' => $request->invoice_id]);
+                return back()->with('error', 'Error: Invoice record not found (ID: ' . $request->invoice_id . ').');
+            }
+
             $student = $invoice->student;
 
             if (!$student) {
-                return back()->with('error', 'Error: Student record not found for this invoice.');
+                Log::warning('Student missing for invoice', ['invoice_id' => $invoice->id, 'student_id' => $invoice->student_id]);
+                return back()->with('error', 'Error: The student associated with this invoice (ID: ' . $invoice->student_id . ') no longer exists in the system.');
             }
 
             // Normalize Phone Number to 255...
