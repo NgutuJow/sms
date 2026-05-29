@@ -219,6 +219,9 @@ public function promoteStudents($classId, $examId)
             $student = $studentMarks->first()->student;
             $exam = $studentMarks->first()->exam;
 
+            // Skip if student was deleted or not found
+            if (!$student) continue;
+
             $totalMarks = $studentMarks->sum('marks');
             $subjectCount = $studentMarks->count();
             $average = $subjectCount > 0 ? $totalMarks / $subjectCount : 0;

@@ -62,16 +62,16 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar avatar-sm me-3">
                                                     <div class="avatar-initial bg-primary rounded-circle">
-                                                        {{ substr($report['student']->first_name, 0, 1) }}{{ substr($report['student']->last_name, 0, 1) }}
+                                                        {{ substr($report['student']->first_name ?? 'S', 0, 1) }}{{ substr($report['student']->last_name ?? 'U', 0, 1) }}
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h6 class="mb-0">{{ $report['student']->first_name }} {{ $report['student']->last_name }}</h6>
-                                                    <small class="text-muted">{{ $report['student']->admission_no }}</small>
+                                                    <h6 class="mb-0">{{ $report['student']->first_name ?? 'Unknown' }} {{ $report['student']->last_name ?? 'Student' }}</h6>
+                                                    <small class="text-muted">{{ $report['student']->admission_no ?? 'N/A' }}</small>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ $report['student']->admission_no }}</td>
+                                        <td>{{ $report['student']->admission_no ?? 'N/A' }}</td>
                                         <td>{{ $report['student']->classData->name ?? 'N/A' }}</td>
                                         <td>{{ $report['exam']->name ?? 'N/A' }}</td>
                                         <td><strong>{{ $report['total_marks'] }}</strong></td>
