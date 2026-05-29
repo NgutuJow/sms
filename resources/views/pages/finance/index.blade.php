@@ -136,7 +136,7 @@
                                         </div>
                                         <div>
                                             <div class="fw-bold text-dark small">{{ optional($invoice->student)->first_name }} {{ optional($invoice->student)->last_name }}</div>
-                                            <span class="x-small text-muted">{{ optional($invoice->student->schoolClass)->class_name ?? 'N/A' }}</span>
+                                            <span class="x-small text-muted">{{ optional($invoice->student->classData)->name ?? 'N/A' }}</span>
                                         </div>
                                     </div>
                                     <div class="text-end">
