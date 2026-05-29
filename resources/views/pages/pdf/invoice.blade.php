@@ -114,10 +114,15 @@
             <td>
                 <div class="label">Billed To:</div>
                 <div class="value">
-                    <strong>{{ $invoice->student->first_name }} {{ $invoice->student->last_name }}</strong><br>
-                    Admission No: {{ $invoice->student->admission_no }}<br>
-                    Class: {{ $invoice->student->classData->class_name ?? 'N/A' }}<br>
-                    Branch: {{ $invoice->student->branchData->name ?? 'N/A' }}
+                    @if($invoice->student)
+                        <strong>{{ $invoice->student->first_name }} {{ $invoice->student->last_name }}</strong><br>
+                        Admission No: {{ $invoice->student->admission_no }}<br>
+                        Class: {{ $invoice->student->classData->class_name ?? 'N/A' }}<br>
+                        Branch: {{ $invoice->student->branchData->name ?? 'N/A' }}
+                    @else
+                        <strong>[STUDENT DATA MISSING]</strong><br>
+                        Please contact administration to verify student record for this invoice.
+                    @endif
                 </div>
             </td>
             <td class="text-right">

@@ -120,9 +120,14 @@
                 <td>
                     <div class="label">Received From:</div>
                     <div class="value">
-                        <strong>{{ $payment->student->first_name }} {{ $payment->student->last_name }}</strong><br>
-                        Admission No: {{ $payment->student->admission_no }}<br>
-                        Class: {{ $payment->student->classData->class_name ?? 'N/A' }}
+                        @if($payment->student)
+                            <strong>{{ $payment->student->first_name }} {{ $payment->student->last_name }}</strong><br>
+                            Admission No: {{ $payment->student->admission_no }}<br>
+                            Class: {{ $payment->student->classData->class_name ?? 'N/A' }}
+                        @else
+                            <strong>[STUDENT DATA MISSING]</strong><br>
+                            Please contact administration to verify student record.
+                        @endif
                     </div>
                 </td>
                 <td class="text-right">

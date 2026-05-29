@@ -28,6 +28,11 @@ class InvoiceActionController extends Controller
     public function download($id)
     {
         $invoice = Invoice::with(['student.classData', 'student.branchData'])->findOrFail($id);
+        
+        if (!$invoice->student) {
+            return back()->with('error', 'Hushiriki: Mwanafunzi wa ankara hii hakuweza kupatikana kwenye mfumo.');
+        }
+
         $pdf = Pdf::loadView('pages.pdf.invoice', compact('invoice'));
         return $pdf->download("Invoice_{$invoice->reference_no}.pdf");
     }
@@ -35,6 +40,11 @@ class InvoiceActionController extends Controller
     public function downloadReceipt($paymentId)
     {
         $payment = Payment::with(['student', 'invoice'])->findOrFail($paymentId);
+        
+        if (!$payment->student) {
+            return back()->with('error', 'Hushiriki: Mwanafunzi wa risiti hii hakuweza kupatikana kwenye mfumo.');
+        }
+
         $pdf = Pdf::loadView('pages.pdf.receipt', compact('payment'));
         return $pdf->download("Receipt_{$payment->provider_ref}.pdf");
     }
