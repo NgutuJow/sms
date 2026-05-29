@@ -55,8 +55,12 @@ class PaymentController extends Controller
         ]);
 
         try {
-            $student = Student::findOrFail($request->student_id);
-            $invoice = Invoice::find($request->invoice_id);
+            $invoice = Invoice::with('student')->findOrFail($request->invoice_id);
+            $student = $invoice->student;
+
+            if (!$student) {
+                return back()->with('error', 'Error: Student record not found for this invoice.');
+            }
 
             // Normalize Phone Number to 255...
             $phone = $request->phone_number;
