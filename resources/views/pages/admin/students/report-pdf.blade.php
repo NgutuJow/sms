@@ -14,6 +14,7 @@
             font-family: 'Arial', sans-serif;
             color: #333;
             line-height: 1.6;
+            padding: 20px;
         }
         
         .header {
@@ -47,28 +48,27 @@
             color: #1e40af;
         }
         
-        .student-info {
+        .student-info-table {
+            width: 100%;
             background: #f0f4f8;
             padding: 12px;
             border-radius: 4px;
             margin-bottom: 20px;
             font-size: 11px;
+            border-collapse: collapse;
         }
         
-        .student-info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-        
-        .info-item {
-            margin-bottom: 8px;
+        .student-info-table td {
+            padding: 8px;
+            vertical-align: top;
+            border: none;
         }
         
         .info-label {
             font-weight: bold;
             color: #1e40af;
             font-size: 10px;
+            display: block;
         }
         
         .info-value {
@@ -96,11 +96,12 @@
             color: #856404;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
+        .stats-table {
+            width: 100%;
             margin-bottom: 20px;
+            border-spacing: 8px 0;
+            margin-left: -8px;
+            margin-right: -8px;
         }
         
         .stat-box {
@@ -109,6 +110,7 @@
             border-radius: 3px;
             padding: 8px;
             text-align: center;
+            width: 16.66%;
         }
         
         .stat-label {
@@ -223,30 +225,32 @@
     <div class="report-title">{{ $student->user->name ?? $student->name ?? 'Student' }} - Comprehensive Performance Report</div>
 
     <!-- Student Information -->
-    <div class="student-info">
-        <div class="student-info-grid">
-            <div class="info-item">
-                <div class="info-label">Admission No:</div>
+    <table class="student-info-table">
+        <tr>
+            <td width="33%">
+                <span class="info-label">Admission No:</span>
                 <div class="info-value">{{ $student->admission_no ?? 'N/A' }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Class:</div>
+            </td>
+            <td width="33%">
+                <span class="info-label">Class:</span>
                 <div class="info-value">{{ $student->classData->class_name ?? 'N/A' }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Stream:</div>
+            </td>
+            <td width="33%">
+                <span class="info-label">Stream:</span>
                 <div class="info-value">{{ $student->stream ?? 'N/A' }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Branch:</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="info-label">Branch:</span>
                 <div class="info-value">{{ $student->branch->name ?? 'N/A' }}</div>
-            </div>
-            <div class="info-item">
-                <div class="info-label">Report Generated:</div>
+            </td>
+            <td colspan="2">
+                <span class="info-label">Report Generated:</span>
                 <div class="info-value">{{ $reportDate }}</div>
-            </div>
-        </div>
-    </div>
+            </td>
+        </tr>
+    </table>
 
     <!-- Class Ranking -->
     <div class="rank-box">
@@ -255,32 +259,34 @@
     </div>
 
     <!-- Statistics -->
-    <div class="stats-grid">
-        <div class="stat-box">
-            <div class="stat-label">Total Exams</div>
-            <div class="stat-value">{{ $stats['total_exams'] }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Total Subjects</div>
-            <div class="stat-value">{{ $stats['total_subjects'] }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Average</div>
-            <div class="stat-value">{{ number_format($stats['overall_average'], 1) }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Highest</div>
-            <div class="stat-value">{{ $stats['highest_mark'] ?? 'N/A' }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Lowest</div>
-            <div class="stat-value">{{ $stats['lowest_mark'] ?? 'N/A' }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Total Marks</div>
-            <div class="stat-value">{{ $stats['total_obtained'] ?? 0 }}</div>
-        </div>
-    </div>
+    <table class="stats-table">
+        <tr>
+            <td class="stat-box">
+                <div class="stat-label">Total Exams</div>
+                <div class="stat-value">{{ $stats['total_exams'] }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Total Subjects</div>
+                <div class="stat-value">{{ $stats['total_subjects'] }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Average</div>
+                <div class="stat-value">{{ number_format($stats['overall_average'], 1) }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Highest</div>
+                <div class="stat-value">{{ $stats['highest_mark'] ?? 'N/A' }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Lowest</div>
+                <div class="stat-value">{{ $stats['lowest_mark'] ?? 'N/A' }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Total Marks</div>
+                <div class="stat-value">{{ $stats['total_obtained'] ?? 0 }}</div>
+            </td>
+        </tr>
+    </table>
 
     <!-- Results by Exam -->
     <div class="section-title">Detailed Results by Examination</div>

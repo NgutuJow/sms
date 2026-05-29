@@ -43,15 +43,17 @@
             color: #666;
             margin: 5px 0 0 0;
         }
-        .stats {
-            display: flex;
-            justify-content: space-around;
+        
+        .stats-table {
+            width: 100%;
             padding: 20px;
             background: #f8f9fa;
             border-bottom: 1px solid #ddd;
+            border-collapse: collapse;
         }
         .stat-item {
             text-align: center;
+            width: 25%;
         }
         .stat-value {
             font-size: 24px;
@@ -66,16 +68,17 @@
         .absent { color: #ef4444; }
         .total { color: #2563eb; }
         .percentage { color: #f59e0b; }
-        table {
+        
+        .records-table {
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+        .records-table th, .records-table td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-        th {
+        .records-table th {
             background: #f8f9fa;
             font-weight: bold;
         }
@@ -120,27 +123,29 @@
             </p>
         </div>
 
-        <div class="stats">
-            <div class="stat-item">
-                <span class="stat-value total">{{ $data['summary']['total_days'] }}</span>
-                <span class="stat-label">Total Days</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value present">{{ $data['summary']['present_days'] }}</span>
-                <span class="stat-label">Present</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value absent">{{ $data['summary']['absent_days'] }}</span>
-                <span class="stat-label">Absent</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value percentage">{{ $data['summary']['percentage'] }}%</span>
-                <span class="stat-label">Attendance Rate</span>
-            </div>
-        </div>
+        <table class="stats-table">
+            <tr>
+                <td class="stat-item">
+                    <span class="stat-value total">{{ $data['summary']['total_days'] }}</span>
+                    <span class="stat-label">Total Days</span>
+                </td>
+                <td class="stat-item">
+                    <span class="stat-value present">{{ $data['summary']['present_days'] }}</span>
+                    <span class="stat-label">Present</span>
+                </td>
+                <td class="stat-item">
+                    <span class="stat-value absent">{{ $data['summary']['absent_days'] }}</span>
+                    <span class="stat-label">Absent</span>
+                </td>
+                <td class="stat-item">
+                    <span class="stat-value percentage">{{ $data['summary']['percentage'] }}%</span>
+                    <span class="stat-label">Attendance Rate</span>
+                </td>
+            </tr>
+        </table>
 
         @if($data['records']->count() > 0)
-        <table>
+        <table class="records-table">
             <thead>
                 <tr>
                     <th>Date</th>

@@ -14,6 +14,7 @@
             font-family: 'Arial', sans-serif;
             color: #333;
             line-height: 1.6;
+            padding: 20px;
         }
         
         .header {
@@ -47,18 +48,17 @@
             color: #1e40af;
         }
         
-        .report-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
+        .report-meta-table {
+            width: 100%;
             margin-bottom: 20px;
             background: #f0f4f8;
-            padding: 8px 12px;
             border-radius: 4px;
         }
         
-        .meta-item {
-            flex: 1;
+        .report-meta-table td {
+            padding: 8px 12px;
+            font-size: 11px;
+            border: none;
         }
         
         .meta-label {
@@ -66,11 +66,12 @@
             color: #1e40af;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+        .stats-table {
+            width: 100%;
             margin-bottom: 20px;
+            border-spacing: 12px 0;
+            margin-left: -12px;
+            margin-right: -12px;
         }
         
         .stat-box {
@@ -79,6 +80,7 @@
             border-radius: 4px;
             padding: 10px;
             text-align: center;
+            width: 20%;
         }
         
         .stat-label {
@@ -153,39 +155,27 @@
             text-align: center;
         }
         
-        .signature-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
+        .signature-table {
+            width: 100%;
+            margin-top: 40px;
+        }
+        
+        .signature-table td {
+            width: 33.33%;
+            text-align: center;
+            padding-top: 20px;
+            border: none;
             font-size: 11px;
         }
         
         .signature-line {
-            width: 25%;
-            text-align: center;
             border-top: 1px solid #333;
-            padding-top: 20px;
+            padding-top: 5px;
+            margin: 0 20px;
         }
         
         .page-break {
             page-break-after: always;
-        }
-        
-        .class-section {
-            margin-bottom: 25px;
-            background: #fff;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 10px;
-        }
-        
-        .class-title {
-            background: #e8eef5;
-            padding: 8px;
-            margin: -10px -10px 10px -10px;
-            font-weight: bold;
-            color: #1e40af;
-            border-radius: 4px 4px 0 0;
         }
     </style>
 </head>
@@ -203,41 +193,45 @@
     <!-- Report Title and Meta -->
     <div class="report-title">{{ $exam->name }}</div>
     
-    <div class="report-meta">
-        <div class="meta-item">
-            <span class="meta-label">Academic Session:</span> {{ $exam->academicSession->session_name ?? 'N/A' }}
-        </div>
-        <div class="meta-item">
-            <span class="meta-label">Semester:</span> {{ $exam->semester->semester_name ?? 'N/A' }}
-        </div>
-        <div class="meta-item">
-            <span class="meta-label">Report Date:</span> {{ $reportDate }}
-        </div>
-    </div>
+    <table class="report-meta-table">
+        <tr>
+            <td width="33%">
+                <span class="meta-label">Academic Session:</span> {{ $exam->academicSession->session_name ?? 'N/A' }}
+            </td>
+            <td width="33%">
+                <span class="meta-label">Semester:</span> {{ $exam->semester->semester_name ?? 'N/A' }}
+            </td>
+            <td width="33%" class="text-right">
+                <span class="meta-label">Report Date:</span> {{ $reportDate }}
+            </td>
+        </tr>
+    </table>
 
     <!-- Statistics -->
-    <div class="stats-grid">
-        <div class="stat-box">
-            <div class="stat-label">Total Students</div>
-            <div class="stat-value">{{ $stats['total_students'] }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Marked</div>
-            <div class="stat-value">{{ $stats['marked_students'] }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Average</div>
-            <div class="stat-value">{{ number_format($stats['average_score'], 1) }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Highest</div>
-            <div class="stat-value">{{ $stats['highest_score'] ?? 'N/A' }}</div>
-        </div>
-        <div class="stat-box">
-            <div class="stat-label">Lowest</div>
-            <div class="stat-value">{{ $stats['lowest_score'] ?? 'N/A' }}</div>
-        </div>
-    </div>
+    <table class="stats-table">
+        <tr>
+            <td class="stat-box">
+                <div class="stat-label">Total Students</div>
+                <div class="stat-value">{{ $stats['total_students'] }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Marked</div>
+                <div class="stat-value">{{ $stats['marked_students'] }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Average</div>
+                <div class="stat-value">{{ number_format($stats['average_score'], 1) }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Highest</div>
+                <div class="stat-value">{{ $stats['highest_score'] ?? 'N/A' }}</div>
+            </td>
+            <td class="stat-box">
+                <div class="stat-label">Lowest</div>
+                <div class="stat-value">{{ $stats['lowest_score'] ?? 'N/A' }}</div>
+            </td>
+        </tr>
+    </table>
 
     <!-- Grade Distribution -->
     @if(count($gradeDistribution) > 0)
@@ -296,17 +290,22 @@
     @endif
 
     <!-- Signature Section -->
-    <div class="signature-section">
-        <div class="signature-line">
-            <strong>Administrator</strong>
-        </div>
-        <div class="signature-line">
-            <strong>Authorized By</strong>
-        </div>
-        <div class="signature-line">
-            <strong>Headmaster/Principal</strong>
-        </div>
-    </div>
+    <table class="signature-table">
+        <tr>
+            <td>
+                <div class="signature-line"></div>
+                <strong>Administrator</strong>
+            </td>
+            <td>
+                <div class="signature-line"></div>
+                <strong>Authorized By</strong>
+            </td>
+            <td>
+                <div class="signature-line"></div>
+                <strong>Headmaster/Principal</strong>
+            </td>
+        </tr>
+    </table>
 
     <!-- Footer -->
     <div class="footer">

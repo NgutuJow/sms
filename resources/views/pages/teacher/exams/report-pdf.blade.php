@@ -15,12 +15,11 @@
             line-height: 1.6;
             color: #333;
             background: white;
+            padding: 20px;
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            width: 100%;
         }
 
         /* Header */
@@ -50,41 +49,30 @@
             line-height: 1.4;
         }
 
-        .school-contact span {
-            display: inline;
-            margin: 0 10px;
-        }
-
         /* Report Info */
-        .report-info {
+        .report-info-table {
+            width: 100%;
             background: #f5f5f5;
             padding: 12px;
             border-radius: 4px;
             margin-bottom: 20px;
             font-size: 11px;
+            border-collapse: collapse;
         }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            padding: 4px 0;
+        .report-info-table td {
+            padding: 6px 10px;
             border-bottom: 1px solid #ddd;
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
         }
 
         .info-label {
             font-weight: bold;
             color: #003366;
-            min-width: 150px;
+            width: 150px;
         }
 
         .info-value {
             color: #333;
-            flex: 1;
         }
 
         /* Table */
@@ -113,17 +101,6 @@
             background: #f9f9f9;
         }
 
-        .results-table tr:hover {
-            background: #f0f0f0;
-        }
-
-        .results-table .no-mark {
-            background: #fff3cd;
-            color: #856404;
-            font-style: italic;
-            text-align: center;
-        }
-
         .grade {
             font-weight: bold;
             text-align: center;
@@ -138,14 +115,6 @@
         .grade-f { background: #f5c6cb; color: #721c24; font-weight: bold; }
 
         /* Summary */
-        .summary {
-            background: #f5f5f5;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-size: 11px;
-        }
-
         .summary-title {
             font-weight: bold;
             color: #003366;
@@ -153,15 +122,18 @@
             font-size: 12px;
         }
 
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+        .summary-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 12px 0;
+            margin-left: -12px;
+            margin-right: -12px;
+            margin-bottom: 20px;
         }
 
         .summary-item {
-            background: white;
-            padding: 8px;
+            background: #f5f5f5;
+            padding: 10px;
             border-left: 4px solid #003366;
             border-radius: 2px;
         }
@@ -187,35 +159,28 @@
             margin-top: 20px;
         }
 
-        .stamp-area {
-            margin-top: 20px;
-            padding-top: 20px;
+        .stamp-table {
+            width: 100%;
+            margin-top: 40px;
             border-top: 1px dashed #999;
-            display: flex;
-            justify-content: space-around;
-            font-size: 10px;
+            padding-top: 20px;
         }
 
         .stamp-box {
             text-align: center;
-            min-width: 150px;
+            width: 33.33%;
+            padding-top: 10px;
         }
 
         .stamp-line {
             border-top: 1px solid #333;
-            margin-top: 40px;
+            margin: 40px 20px 0 20px;
             padding-top: 5px;
-            min-width: 100px;
+            font-size: 10px;
         }
 
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            .container {
-                max-width: 100%;
-            }
+        .page-break {
+            page-break-after: always;
         }
     </style>
 </head>
@@ -227,8 +192,7 @@
             <div class="school-code">{{ $school->code ?? '' }}</div>
             <div class="school-contact">
                 @if($school)
-                    <span>📧 {{ $school->email ?? '--' }}</span>
-                    <span>📞 {{ $school->phone ?? '--' }}</span>
+                    <span>📧 {{ $school->email ?? '--' }} | 📞 {{ $school->phone ?? '--' }}</span>
                     <br>
                     <span>📍 {{ $school->address ?? '' }} {{ $school->district ?? '' }}, {{ $school->region ?? '' }}</span>
                 @endif
@@ -236,28 +200,28 @@
         </div>
 
         <!-- Report Info -->
-        <div class="report-info">
-            <div class="info-row">
-                <span class="info-label">Report Title:</span>
-                <span class="info-value">Examination Results Report</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Subject:</span>
-                <span class="info-value">{{ $subject->subject_name }} ({{ $subject->schoolClass->class_name ?? '' }})</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Examination:</span>
-                <span class="info-value">{{ $exam->name }} - {{ $exam->exam_type ?? '' }}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Teacher:</span>
-                <span class="info-value">{{ $teacher->first_name ?? '' }} {{ $teacher->last_name ?? '' }}</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Report Date:</span>
-                <span class="info-value">{{ $reportDate }}</span>
-            </div>
-        </div>
+        <table class="report-info-table">
+            <tr>
+                <td class="info-label">Report Title:</td>
+                <td class="info-value">Examination Results Report</td>
+            </tr>
+            <tr>
+                <td class="info-label">Subject:</td>
+                <td class="info-value">{{ $subject->subject_name }} ({{ $subject->schoolClass->class_name ?? '' }})</td>
+            </tr>
+            <tr>
+                <td class="info-label">Examination:</td>
+                <td class="info-value">{{ $exam->name }} - {{ $exam->exam_type ?? '' }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">Teacher:</td>
+                <td class="info-value">{{ $teacher->first_name ?? '' }} {{ $teacher->last_name ?? '' }}</td>
+            </tr>
+            <tr>
+                <td class="info-label">Report Date:</td>
+                <td class="info-value">{{ $reportDate }}</td>
+            </tr>
+        </table>
 
         <!-- Results Table -->
         <table class="results-table">
@@ -284,7 +248,7 @@
                             @if($studentMark)
                                 <strong>{{ $studentMark->marks }}/100</strong>
                             @else
-                                <span class="no-mark">Not Marked</span>
+                                <span style="color: #856404; font-style: italic;">Not Marked</span>
                             @endif
                         </td>
                         <td>
@@ -293,7 +257,7 @@
                                     {{ $studentMark->grade }}
                                 </span>
                             @else
-                                <span class="no-mark">--</span>
+                                <span>--</span>
                             @endif
                         </td>
                         <td>{{ $student->streamData->stream_name ?? '--' }}</td>
@@ -307,36 +271,44 @@
         </table>
 
         <!-- Summary -->
-        <div class="summary">
-            <div class="summary-title">📊 Summary Statistics</div>
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <div class="summary-label">Total Students</div>
-                    <div class="summary-value">{{ $totalStudents }}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Marked</div>
-                    <div class="summary-value">{{ $markedCount }}</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-label">Pending</div>
-                    <div class="summary-value">{{ $totalStudents - $markedCount }}</div>
-                </div>
-            </div>
-        </div>
+        <div class="summary-title">📊 Summary Statistics</div>
+        <table class="summary-table">
+            <tr>
+                <td width="33.33%">
+                    <div class="summary-item">
+                        <div class="summary-label">Total Students</div>
+                        <div class="summary-value">{{ $totalStudents }}</div>
+                    </div>
+                </td>
+                <td width="33.33%">
+                    <div class="summary-item">
+                        <div class="summary-label">Marked</div>
+                        <div class="summary-value">{{ $markedCount }}</div>
+                    </div>
+                </td>
+                <td width="33.33%">
+                    <div class="summary-item">
+                        <div class="summary-label">Pending</div>
+                        <div class="summary-value">{{ $totalStudents - $markedCount }}</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
         <!-- Signature Area -->
-        <div class="stamp-area">
-            <div class="stamp-box">
-                <div class="stamp-line">Teacher Signature</div>
-            </div>
-            <div class="stamp-box">
-                <div class="stamp-line">Head Teacher</div>
-            </div>
-            <div class="stamp-box">
-                <div class="stamp-line">Date</div>
-            </div>
-        </div>
+        <table class="stamp-table">
+            <tr>
+                <td class="stamp-box">
+                    <div class="stamp-line">Teacher Signature</div>
+                </td>
+                <td class="stamp-box">
+                    <div class="stamp-line">Head Teacher</div>
+                </td>
+                <td class="stamp-box">
+                    <div class="stamp-line">Date</div>
+                </td>
+            </tr>
+        </table>
 
         <!-- Footer -->
         <div class="footer">

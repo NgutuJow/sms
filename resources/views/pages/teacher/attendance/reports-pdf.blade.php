@@ -9,10 +9,12 @@
         .header { margin-bottom: 24px; }
         .header h1 { margin: 0 0 8px; font-size: 24px; }
         .meta { font-size: 13px; color: #555; margin-bottom: 18px; }
-        .summary { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
-        .card { background: #f7f7f7; border: 1px solid #ddd; border-radius: 6px; padding: 12px 14px; width: calc(25% - 10px); box-sizing: border-box; }
+        
+        .summary-table { width: 100%; border-collapse: separate; border-spacing: 10px 0; margin-left: -10px; margin-right: -10px; margin-bottom: 24px; }
+        .card { background: #f7f7f7; border: 1px solid #ddd; border-radius: 6px; padding: 12px 14px; text-align: center; }
         .card h3 { margin: 0 0 6px; font-size: 14px; color: #333; }
         .card p { margin: 0; font-size: 18px; font-weight: 700; }
+        
         .table-wrap { width: 100%; border-collapse: collapse; margin-top: 12px; }
         .table-wrap th,
         .table-wrap td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; font-size: 12px; }
@@ -33,28 +35,40 @@
         </div>
     </div>
 
-    <div class="summary">
-        <div class="card">
-            <h3>Total Records</h3>
-            <p>{{ $stats['total'] }}</p>
-        </div>
-        <div class="card">
-            <h3>Present</h3>
-            <p>{{ $stats['present'] }}</p>
-        </div>
-        <div class="card">
-            <h3>Absent</h3>
-            <p>{{ $stats['absent'] }}</p>
-        </div>
-        <div class="card">
-            <h3>Late</h3>
-            <p>{{ $stats['late'] }}</p>
-        </div>
-        <div class="card">
-            <h3>Attendance Rate</h3>
-            <p>{{ $stats['percent'] }}%</p>
-        </div>
-    </div>
+    <table class="summary-table">
+        <tr>
+            <td width="20%">
+                <div class="card">
+                    <h3>Total Records</h3>
+                    <p>{{ $stats['total'] }}</p>
+                </div>
+            </td>
+            <td width="20%">
+                <div class="card">
+                    <h3>Present</h3>
+                    <p>{{ $stats['present'] }}</p>
+                </div>
+            </td>
+            <td width="20%">
+                <div class="card">
+                    <h3>Absent</h3>
+                    <p>{{ $stats['absent'] }}</p>
+                </div>
+            </td>
+            <td width="20%">
+                <div class="card">
+                    <h3>Late</h3>
+                    <p>{{ $stats['late'] }}</p>
+                </div>
+            </td>
+            <td width="20%">
+                <div class="card">
+                    <h3>Attendance Rate</h3>
+                    <p>{{ $stats['percent'] }}%</p>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <table class="table-wrap">
         <thead>

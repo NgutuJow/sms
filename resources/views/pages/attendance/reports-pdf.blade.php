@@ -9,10 +9,12 @@
         .header { margin-bottom: 24px; }
         .header h1 { margin: 0 0 8px; font-size: 24px; }
         .meta { font-size: 12px; color: #555; margin-bottom: 16px; }
-        .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .card { background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 12px 14px; }
+        
+        .summary-table { width: 100%; border-collapse: separate; border-spacing: 12px 0; margin-left: -12px; margin-right: -12px; margin-bottom: 20px; }
+        .card { background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 12px 14px; text-align: center; }
         .card h3 { margin: 0 0 8px; font-size: 13px; color: #333; }
         .card p { margin: 0; font-size: 18px; font-weight: 700; }
+        
         .table-wrap { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
         .table-wrap th, .table-wrap td { border: 1px solid #ddd; padding: 8px 10px; font-size: 12px; }
         .table-wrap th { background: #f0f0f0; }
@@ -33,12 +35,22 @@
         </div>
     </div>
 
-    <div class="summary-grid">
-        <div class="card"><h3>Total</h3><p>{{ $stats['total'] }}</p></div>
-        <div class="card"><h3>Present</h3><p>{{ $stats['present'] }}</p></div>
-        <div class="card"><h3>Absent</h3><p>{{ $stats['absent'] }}</p></div>
-        <div class="card"><h3>Late</h3><p>{{ $stats['late'] }}</p></div>
-    </div>
+    <table class="summary-table">
+        <tr>
+            <td width="25%">
+                <div class="card"><h3>Total</h3><p>{{ $stats['total'] }}</p></div>
+            </td>
+            <td width="25%">
+                <div class="card"><h3>Present</h3><p>{{ $stats['present'] }}</p></div>
+            </td>
+            <td width="25%">
+                <div class="card"><h3>Absent</h3><p>{{ $stats['absent'] }}</p></div>
+            </td>
+            <td width="25%">
+                <div class="card"><h3>Late</h3><p>{{ $stats['late'] }}</p></div>
+            </td>
+        </tr>
+    </table>
 
     <p class="table-heading">Attendance Records</p>
     <table class="table-wrap">

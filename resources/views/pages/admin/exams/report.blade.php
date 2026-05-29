@@ -7,6 +7,9 @@
             <h2>Exam Report: {{ $report['exam']->name }}</h2>
         </div>
         <div class="col-md-4 text-end">
+            <a href="{{ route('admin.exams.results.pdf', $report['exam']->id) }}" class="btn btn-danger me-2">
+                <i class="fas fa-file-pdf"></i> Download PDF
+            </a>
             <a href="{{ route('admin.exams.show', $report['exam']->id) }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
