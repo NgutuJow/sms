@@ -236,12 +236,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/timetable/store', [TimetableController::class, 'store'])->name('timetable.store');
         Route::put('/timetable/{id}', [TimetableController::class, 'update'])->name('timetable.update');
         Route::delete('/timetable/{id}', [TimetableController::class, 'destroy'])->name('timetable.destroy');
+        Route::get('/timetable/download/{id}', [TimetableController::class, 'download'])->name('timetable.download');
 
         // --- 3. SYLLABUS ROUTES ---
         Route::get('/syllabus', [SyllabusController::class, 'index'])->name('syllabus.index');
         Route::post('/syllabus/store', [SyllabusController::class, 'store'])->name('syllabus.store');
         Route::put('/syllabus/{id}', [SyllabusController::class, 'update'])->name('syllabus.update');
         Route::delete('/syllabus/{id}', [SyllabusController::class, 'destroy'])->name('syllabus.destroy');
+        Route::get('/syllabus/download/{id}', [SyllabusController::class, 'download'])->name('syllabus.download');
     });
 
     // Students Management
@@ -398,8 +400,6 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/student/{studentId}/clear', [ChatController::class, 'clearLogs'])->name('clear');
     });
 });
-
-Route::get('/academic/syllabus/download/{id}', [SyllabusController::class, 'download'])->name('academic.syllabus.download');
 
 Route::get('/', function() {
     return view('welcome');

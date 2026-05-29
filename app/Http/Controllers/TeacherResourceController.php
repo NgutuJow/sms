@@ -42,15 +42,20 @@ public function index(Request $request)
      */
     public function show($id)
     {
-        // Unaweza kutumia hii kuonyesha file moja moja kama unahitaji tracking
         $syllabus = Syllabus::findOrFail($id);
-        $path = storage_path('app/public/' . $syllabus->file_path);
-
-        if (!file_exists($path)) {
-            abort(404);
+        
+        if (!$syllabus->file_path) {
+            return back()->with('error', 'Faili halipo.');
         }
 
-        return response()->file($path);
+        $path = ltrim($syllabus->file_path, '/');
+        $absolutePath = storage_path('app/public/' . $path);
+
+        if (file_exists($absolutePath)) {
+            return response()->file($absolutePath);
+        }
+
+        return back()->with('error', 'Faili halikupatikana server.');
     }
 
     // Nimeacha mbinu nyingine (store, update, destroy) zikiwa tupu 

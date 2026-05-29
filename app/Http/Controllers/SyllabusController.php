@@ -63,15 +63,27 @@ public function store(Request $request)
         return back()->with('success', 'Mada imefutwa!');
     }
     // Hakikisha jina ni 'download' (herufi ndogo zote)
-public function download($id)
-{
-    $syllabus = Syllabus::findOrFail($id);
+    public function download($id)
+    {
+        $syllabus = Syllabus::findOrFail($id);
 
-    // Angalia kama file lipo kwenye storage
-    if (Storage::disk('public')->exists($syllabus->file_path)) {
-        return Storage::disk('public')->download($syllabus->file_path, $syllabus->topic_name . '.pdf');
+        if (!$syllabus->file_path) {
+            return back()->with('error', 'Mada hii haina faili la PDF.');
+        }
+
+        // Clean path (remove leading slash if present)
+        $path = ltrim($syllabus->file_path, '/');
+
+        if (Storage::disk('public')->exists($path)) {
+            return Storage::disk('public')->download($path, $syllabus->topic_name . '.pdf');
+        }
+
+        // Try direct file check as fallback
+        $absolutePath = storage_path('app/public/' . $path);
+        if (file_exists($absolutePath)) {
+            return response()->download($absolutePath, $syllabus->topic_name . '.pdf');
+        }
+
+        return back()->with('error', 'File halikupatikana kwenye server.');
     }
-
-    return back()->with('error', 'File halikupatikana server.');
-}
 }

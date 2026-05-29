@@ -188,7 +188,7 @@
                                     <span class="text-muted x-small fw-medium">{{ $announcement->created_at->diffForHumans() }}</span>
                                 </div>
                                 <div class="fw-bold text-dark small mb-1">{{ Str::limit($announcement->title, 50) }}</div>
-                                <p class="text-muted x-small mb-2">{{ Str::limit(strip_tags($announcement->content), 80) }}</p>
+                                <p class="text-muted x-small mb-2">{{ Str::limit(strip_tags($announcement->description), 80) }}</p>
                                 @if($announcement->pdf_path)
                                     <a href="{{ route('announcements.download', $announcement->id) }}" class="text-primary x-small fw-bold text-decoration-none border-bottom border-primary">
                                         <i class="fas fa-file-pdf me-1"></i>Document attached

@@ -159,12 +159,27 @@ class AnnouncementController extends Controller
     /**
      * Download announcement PDF
      */
-    public function downloadPdf(Announcement $announcement)
+    public function downloadPdf($id)
     {
-        if (!$announcement->pdf_path || !Storage::disk('public')->exists($announcement->pdf_path)) {
-            abort(404, 'PDF file not found');
+        $announcement = Announcement::findOrFail($id);
+
+        if (!$announcement->pdf_path) {
+            return back()->with('error', 'Hili tangazo halina faili la PDF.');
         }
 
-        return Storage::disk('public')->download($announcement->pdf_path);
+        // Clean path (remove leading slash if present)
+        $path = ltrim($announcement->pdf_path, '/');
+
+        if (Storage::disk('public')->exists($path)) {
+            return Storage::disk('public')->download($path);
+        }
+
+        // Try direct file check as fallback (sometimes helpful on Windows)
+        $absolutePath = storage_path('app/public/' . $path);
+        if (file_exists($absolutePath)) {
+            return response()->download($absolutePath);
+        }
+
+        return back()->with('error', 'Faili la PDF halikuweza kupatikana kwenye server.');
     }
 }

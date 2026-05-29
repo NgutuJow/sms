@@ -74,4 +74,31 @@ class TimetableController extends Controller
         Timetable::destroy($id);
         return back()->with('success', 'Kipindi kimefutwa kwenye ratiba!');
     }
+
+    /**
+     * Download timetable PDF
+     */
+    public function download($id)
+    {
+        $timetable = Timetable::findOrFail($id);
+
+        if (!$timetable->file_path) {
+            return back()->with('error', 'Ratiba hii haina faili la PDF.');
+        }
+
+        // Clean path (remove leading slash if present)
+        $path = ltrim($timetable->file_path, '/');
+
+        if (Storage::disk('public')->exists($path)) {
+            return Storage::disk('public')->download($path, 'Ratiba_' . ($timetable->timetable_name ?? $id) . '.pdf');
+        }
+
+        // Try direct file check as fallback
+        $absolutePath = storage_path('app/public/' . $path);
+        if (file_exists($absolutePath)) {
+            return response()->download($absolutePath, 'Ratiba_' . ($timetable->timetable_name ?? $id) . '.pdf');
+        }
+
+        return back()->with('error', 'Faili la ratiba halikupatikana server.');
+    }
 }

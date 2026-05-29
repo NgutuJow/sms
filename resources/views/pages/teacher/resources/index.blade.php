@@ -39,7 +39,7 @@
                                     </span>
                                 </td>
                                 <td class="text-end pe-3">
-                                    <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank" class="btn btn-light btn-sm text-primary shadow-sm border">
+                                    <a href="{{ route('academic.syllabus.download', $item->id) }}" class="btn btn-light btn-sm text-primary shadow-sm border">
                                         <i class="fas fa-eye"></i> View
                                     </a>
                                 </td>
@@ -73,7 +73,7 @@
                                 </small>
                             </div>
                             <div>
-                                <a href="{{ asset('storage/' . $table->file_path) }}" target="_blank" class="btn btn-outline-success btn-sm rounded-pill">
+                                <a href="{{ route('academic.timetable.download', $table->id) }}" class="btn btn-outline-success btn-sm rounded-pill">
                                     <i class="fas fa-download"></i>
                                 </a>
                             </div>
