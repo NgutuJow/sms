@@ -134,10 +134,8 @@
                                         <div class="bg-danger bg-opacity-10 p-2 rounded-3 me-3">
                                             <i class="fas fa-user-slash text-danger x-small"></i>
                                         </div>
-                                        <div>
-                                            <div class="fw-bold text-dark small">{{ optional($invoice->student)->first_name }} {{ optional($invoice->student)->last_name }}</div>
-                                            <span class="x-small text-muted">{{ optional($invoice->student->classData)->name ?? 'N/A' }}</span>
-                                        </div>
+                                            <div class="fw-bold text-dark small">{{ $invoice->student->first_name ?? 'Unknown' }} {{ $invoice->student->last_name ?? 'Student' }}</div>
+                                            <span class="x-small text-muted">{{ $invoice->student->classData->name ?? 'N/A' }}</span>
                                     </div>
                                     <div class="text-end">
                                         <div class="fw-bold text-danger small">TZS {{ number_format($invoice->balance, 0) }}</div>
