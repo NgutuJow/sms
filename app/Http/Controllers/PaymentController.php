@@ -76,8 +76,12 @@ class PaymentController extends Controller
             
             // Check for redirect_url (This is the URL that would be in the iframe)
             if (!empty($result['redirect_url'])) {
-                // Return a professional view that embeds this URL in an iframe
-                return view('pages.parent.pesapal_iframe', [
+                // Choose view based on user context
+                $view = (auth()->check() && auth()->user()->hasRole('accountant')) 
+                        ? 'pages.finance.pesapal_iframe' 
+                        : 'pages.parent.pesapal_iframe';
+
+                return view($view, [
                     'redirect_url' => $result['redirect_url'],
                     'student' => $student,
                     'invoice' => $invoice,
@@ -97,9 +101,13 @@ class PaymentController extends Controller
     public function callback(Request $request)
     {
         $trackingId = $request->get('OrderTrackingId') ?? $request->get('tracking_id') ?? $request->get('orderTrackingId');
+        
+        $viewResult = (auth()->check() && auth()->user()->hasRole('accountant')) 
+                      ? 'pages.finance.pesapal_result' 
+                      : 'pages.parent.pesapal_result';
 
         if (!$trackingId) {
-            return view('pages.parent.pesapal_result', [
+            return view($viewResult, [
                 'success' => false,
                 'message' => 'No tracking ID received from Pesapal.',
                 'invoiceId' => $request->invoice_id,
@@ -109,7 +117,7 @@ class PaymentController extends Controller
         $response = $this->pesapal->verify($trackingId);
         
         if (!$response) {
-            return view('pages.parent.pesapal_result', [
+            return view($viewResult, [
                 'success' => false,
                 'message' => 'Failed to verify payment with Pesapal.',
                 'invoiceId' => $request->invoice_id,
@@ -142,7 +150,7 @@ class PaymentController extends Controller
                 }
             }
 
-            return view('pages.parent.pesapal_result', [
+            return view($viewResult, [
                 'success' => true,
                 'message' => 'Payment successfully completed! A receipt has been sent to your email and WhatsApp.',
                 'invoiceId' => $request->invoice_id,
@@ -150,7 +158,7 @@ class PaymentController extends Controller
         }
 
         $statusDescription = $response['payment_status_description'] ?? 'Failed';
-        return view('pages.parent.pesapal_result', [
+        return view($viewResult, [
             'success' => false,
             'message' => 'Payment was not successful. Status: ' . $statusDescription,
             'invoiceId' => $request->invoice_id,
