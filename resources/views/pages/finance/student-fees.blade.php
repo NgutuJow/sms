@@ -2,6 +2,33 @@
 
 @section('content')
 <div class="container-fluid py-4">
+    <!-- Feedback Alerts -->
+    @if(session('success'))
+        <div class="alert alert-success border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle fs-4 me-3"></i>
+                <div>
+                    <h6 class="mb-0 fw-bold">Success!</h6>
+                    <p class="mb-0 small">{{ session('success') }}</p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger border-0 shadow-sm rounded-4 mb-4 alert-dismissible fade show">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-exclamation-triangle fs-4 me-3"></i>
+                <div>
+                    <h6 class="mb-0 fw-bold">Action Failed</h6>
+                    <p class="mb-0 small">{{ session('error') }}</p>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold text-dark mb-1">Student Fee Management</h2>
@@ -113,63 +140,6 @@
                                             data-bs-target="#payModal{{ $invoice->id }}">
                                         <i class="fas fa-hand-holding-dollar me-1"></i> Process Pay
                                     </button>
-
-                                    <!-- Payment Modal -->
-                                    <div class="modal fade" id="payModal{{ $invoice->id }}" tabindex="-1" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content border-0 shadow-lg rounded-4">
-                                                <div class="modal-header border-0 pb-0">
-                                                    <h5 class="modal-title fw-bold">Process Pesapal Payment</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="{{ route('pesapal.initiate') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="student_id" value="{{ $invoice->student_id }}">
-                                                    <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
-                                                    <div class="modal-body text-start">
-                                                        <div class="bg-light p-3 rounded-3 mb-3">
-                                                            <div class="small text-muted mb-1">Student Name</div>
-                                                            <div class="fw-bold text-dark">{{ optional($invoice->student)->first_name }} {{ optional($invoice->student)->last_name }}</div>
-                                                            <div class="x-small text-muted mt-2">Invoice: {{ $invoice->reference_no }} | Balance: <strong>TZS {{ number_format($invoice->balance, 0) }}</strong></div>
-                                                        </div>
-
-                                                        <div class="mb-3">
-                                                            <label class="form-label x-small fw-bold text-uppercase">Amount to Pay (TZS)</label>
-                                                            <input type="number" name="amount" class="form-control" value="{{ (int)$invoice->balance }}" min="1000" required>
-                                                        </div>
-
-                                                        <div class="row g-2">
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label x-small fw-bold text-uppercase">Payer Email</label>
-                                                                <input type="email" name="email_address" class="form-control" value="{{ optional($invoice->student)->guardian_email ?? 'info@alphadventist.ac.tz' }}" required>
-                                                            </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label x-small fw-bold text-uppercase">Payer Phone</label>
-                                                                <input type="text" name="phone_number" class="form-control" value="{{ optional($invoice->student)->guardian_phone ?? '0745668746' }}" required>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row g-2">
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label x-small fw-bold text-uppercase">First Name</label>
-                                                                <input type="text" name="first_name" class="form-control" value="{{ optional($invoice->student)->first_name }}" required>
-                                                            </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label x-small fw-bold text-uppercase">Last Name</label>
-                                                                <input type="text" name="last_name" class="form-control" value="{{ optional($invoice->student)->last_name }}" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer border-0 pt-0">
-                                                        <button type="button" class="btn btn-light rounded-pill px-4 fw-bold small" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold small">
-                                                            <i class="fas fa-external-link-alt me-2"></i>Initiate Pesapal
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @else
                                     <span class="text-success small fw-bold"><i class="fas fa-circle-check"></i> Complete</span>
                                 @endif
@@ -183,6 +153,69 @@
         </div>
     </div>
 </div>
+
+<!-- Payment Modals -->
+@foreach($studentInvoices as $invoice)
+    @if($invoice->balance > 0)
+        <div class="modal fade" id="payModal{{ $invoice->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg rounded-4">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold">Process Pesapal Payment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('pesapal.initiate') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="student_id" value="{{ $invoice->student_id }}">
+                        <input type="hidden" name="invoice_id" value="{{ $invoice->id }}">
+                        <input type="hidden" name="line_1" value="School Fee Payment">
+                        
+                        <div class="modal-body text-start">
+                            <div class="bg-light p-3 rounded-3 mb-3">
+                                <div class="small text-muted mb-1">Student Name</div>
+                                <div class="fw-bold text-dark">{{ optional($invoice->student)->first_name }} {{ optional($invoice->student)->last_name }}</div>
+                                <div class="x-small text-muted mt-2">Invoice: {{ $invoice->reference_no }} | Balance: <strong>TZS {{ number_format($invoice->balance, 0) }}</strong></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label x-small fw-bold text-uppercase">Amount to Pay (TZS)</label>
+                                <input type="number" name="amount" class="form-control" value="{{ (int)$invoice->balance }}" min="1000" required>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label x-small fw-bold text-uppercase">Payer Email</label>
+                                    <input type="email" name="email_address" class="form-control" value="{{ optional($invoice->student)->guardian_email ?? 'info@alphadventist.ac.tz' }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label x-small fw-bold text-uppercase">Payer Phone</label>
+                                    <input type="text" name="phone_number" class="form-control" value="{{ optional($invoice->student)->guardian_phone ?? '0745668746' }}" required>
+                                </div>
+                            </div>
+
+                            <div class="row g-2">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label x-small fw-bold text-uppercase">First Name</label>
+                                    <input type="text" name="first_name" class="form-control" value="{{ optional($invoice->student)->first_name }}" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label x-small fw-bold text-uppercase">Last Name</label>
+                                    <input type="text" name="last_name" class="form-control" value="{{ optional($invoice->student)->last_name }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 pt-0">
+                            <button type="button" class="btn btn-light rounded-pill px-4 fw-bold small" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold small">
+                                <i class="fas fa-external-link-alt me-2"></i>Initiate Pesapal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+@endforeach
 
 <style>
     .rounded-4 { border-radius: 1.25rem !important; }

@@ -43,6 +43,8 @@ class PaymentController extends Controller
 
     public function initiate(Request $request)
     {
+        Log::info('Pesapal Initiation Request received', $request->all());
+
         $request->validate([
             'student_id'    => 'required',
             'amount'        => 'required|numeric|min:1000',
